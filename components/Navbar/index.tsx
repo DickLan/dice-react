@@ -1,10 +1,18 @@
 import Link from "next/link";
+import Image from "next/image";
 export default function Navbar() {
   return (
     <>
       <div className="wrapper">
         <div className="nav-left">
           {/* <img className="logo" src="@/assets/images/dice2.png" alt="" /> */}
+
+          <Image
+            src="/images/dice2.png"
+            width={30}
+            height={30}
+            alt="logo display a dice"
+          />
           <nav className="navbar">
             <Link href="/">十八仔 3洗芭樂</Link>
             {/* <!-- <Link href="/about">About</Link> --> */}
