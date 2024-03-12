@@ -1,7 +1,7 @@
 import React, { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
-import { Toast } from "../components/Toast";
-import { apiHelper } from "@/utils/apiHelper";
+import { Toast } from "../../composables/toast";
+import { apiHelper } from "@/utils/helpers";
 export default function SingIn() {
   const router = useRouter();
   const [formData, setFormData] = useState({
