@@ -2,6 +2,7 @@ import React, { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import { Toast } from "../../composables/toast";
 import { apiHelper } from "@/utils/helpers";
+import Link from "next/link";
 export default function SingIn() {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -12,7 +13,8 @@ export default function SingIn() {
   const handleSignIn = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("handleSignIn", e.target);
+    // console.log("handleSignIn", e.target);
+    console.log('formData', formData);
     try {
       console.log("handleSignIn");
       const response = await apiHelper.post("/signIn", formData);
@@ -61,14 +63,14 @@ export default function SingIn() {
           <h1>登入</h1>
         </div>
         {/*  @submit.prevent.stop="handleSignIn" */}
-        <form className="form-control" action="">
+        {/* react 可以用 onSubmit來執行函示 或是 action來執行Url */}
+        <form className="form-control" onSubmit={handleSignIn}>
           <div className="sign-in-info ">
-            {/* 這裡要從 vue 轉成　react */}
 
             <div className="">
               <label htmlFor="email">信箱</label>
               <input
-                value={formData.email}
+                defaultValue={formData.email}
                 onChange={handleChange}
                 name="email"
                 id="email"
@@ -80,7 +82,7 @@ export default function SingIn() {
             <div className="">
               <label htmlFor="password">密碼</label>
               <input
-                value={formData.password}
+                defaultValue={formData.password}
                 onChange={handleChange}
                 name="password"
                 id="password"
@@ -93,8 +95,8 @@ export default function SingIn() {
         </form>
 
         <div className="redirect">
-          <a href="/signUp">新會員註冊</a>
-          <a href="/forgetPassword">忘記密碼</a>
+          <Link href="/signUp"  >新會員註冊</Link>
+          <Link href="/forgetPassword">忘記密碼</Link>
         </div>
       </div>
     </>
