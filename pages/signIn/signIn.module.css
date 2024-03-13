@@ -1,0 +1,15 @@
+.sign-up-link,
+.forget-password-link {
+  margin-top: 1rem;
+
+}
+
+.redirect {
+  margin-top: 2rem;
+}
+
+.redirect a {
+  margin-top: 1rem;
+  display: block;
+  color: rgb(30, 63, 63);
+}

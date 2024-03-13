@@ -1,0 +1,29 @@
+.wrapper {
+  display: flex;
+  background-color: #3a9927;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  /* background-color: #704545; */
+  justify-content: start;
+  align-items: center;
+}
+
+.logo {
+  width: 2.5rem;
+  margin: 0.3rem 1rem;
+}
+
+.navbar {
+  /* display: inline; */
+  font-size: 1.5rem;
+}
+
+.auth-a {
+  margin: 0 1rem;
+  /* background-color: #4709aa; */
+}

@@ -1,0 +1,91 @@
+.form-page-title h1 {
+  /* color: aqua; */
+}
+
+.form-control {
+  margin-top: 1rem;
+  width: 40rem;
+  text-align: center;
+}
+
+.form-control .display-label,
+.form-control input,
+.form-control select,
+.form-control textarea {
+  font-style: normal;
+  display: block;
+  width: 50%;
+  /* 让输入框占满容器宽度 */
+  padding: 8px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  text-align: center;
+  /* 在元素之间添加一些空间 */
+  /* border: 1px solid #af1010; */
+  border-radius: 4px;
+  box-sizing: border-box;
+  /* 防止内边距和边框影响总宽度 */
+  font-size: 18px;
+
+}
+
+.form-control label {
+  color: #cabfa1;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.form-control button {
+  margin-top: 1rem;
+  font-style: normal;
+  /* display: ; */
+  width: 10%;
+  font-size: 20px;
+  background-color: #bb7708;
+}
+
+.form-control button:hover {
+  filter: opacity(0.9);
+}
+
+.display-info-span {
+  font-style: normal;
+  display: block;
+  width: 50%;
+  /* 让输入框占满容器宽度 */
+  padding: 8px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+  text-align: center;
+  /* 在元素之间添加一些空间 */
+  /* border: 1px solid #af1010; */
+  border-radius: 4px;
+  box-sizing: border-box;
+  /* 防止内边距和边框影响总宽度 */
+  font-size: 18px;
+  background-color: #c4c4c4;
+  color: #141010;
+}
+
+.avatar-img-label {
+  margin: 1rem;
+  color: rgb(3, 3, 3);
+  background-color: #93731c;
+  padding: 10px;
+  font-size: 18px;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.avatar-img-part img {
+  width: 10rem;
+  height: 10rem;
+}
+
+.avatar-img-part .avatar-img-label:hover {
+  opacity: 0.8;
+}
+
+.avatar-img-part .avatar-img-label:active {
+  background-color: #774f0c;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset;
+}
