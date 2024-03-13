@@ -5,12 +5,15 @@ import "@/styles/public/main.css"; // 樣式放在同一層
 import "@/styles/public/formStyle.css"; // 引入 form 表單共用樣式
 import type { AppProps } from "next/app";
 import Layout from "@/components/layout";
+import { AuthProvider } from "@/context/AuthContext";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Layout>
-        <Component {...pageProps} />;
-      </Layout>
+      <AuthProvider>
+        <Layout>
+          <Component {...pageProps} />;
+        </Layout>
+      </AuthProvider>
     </>
   );
 }

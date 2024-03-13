@@ -1,7 +1,10 @@
 import style from "@/components/Navbar/navbar.module.css";
 import Link from "next/link";
 import Image from "next/image";
+// 加入自訂 hook - useAuth 方便全局狀態管理與應用
+import { useAuth } from "@/context/AuthContext";
 export default function Navbar() {
+  const { isAuthenticated, login, logout } = useAuth();
   return (
     <>
       <div className={style.wrapper}>
@@ -17,6 +20,7 @@ export default function Navbar() {
             <Link href="/">十八仔</Link>
             {/*  3洗芭樂 */}
           </nav>
+          <h2>isAuthenticated:{isAuthenticated.toString()}</h2>
         </div>
 
         <div className="nav-mid">
