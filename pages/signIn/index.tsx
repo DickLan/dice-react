@@ -1,8 +1,8 @@
 import style from "@/pages/signIn/signIn.module.css";
 import React, { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
-import { Toast } from "../../composables/toast";
 import { apiHelper } from "@/utils/helpers";
+import { Toast } from "@/composables/toast";
 import Link from "next/link";
 export default function SingIn() {
   const router = useRouter();
@@ -11,13 +11,13 @@ export default function SingIn() {
     password: "",
   });
 
-  const handleSignIn = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    // console.log("handleSignIn", e.target);
+    // console.log("handleSubmit", e.target);
     console.log("formData", formData);
     try {
-      console.log("handleSignIn");
+      console.log("handleSubmit");
       const response = await apiHelper.post("/signIn", formData);
       if (!response.data) {
         Toast.fire({
@@ -29,7 +29,8 @@ export default function SingIn() {
       const data = response.data;
 
       // 登入成功後 將 token 存在 local storage
-      localStorage.setToken(data.token);
+      // localStorage.setToken(data.token);\
+      localStorage.setItem("token", data.token);
       // 將 user 存在 狀態管理器中
       // 要再查一下 react 怎麼處理這部分
 
@@ -63,9 +64,9 @@ export default function SingIn() {
         <div className="form-page-title">
           <h1>登入</h1>
         </div>
-        {/*  @submit.prevent.stop="handleSignIn" */}
+        {/*  @submit.prevent.stop="handleSubmit" */}
         {/* react 可以用 onSubmit來執行函示 或是 action來執行Url */}
-        <form className="form-control" onSubmit={handleSignIn}>
+        <form className="form-control" onSubmit={handleSubmit}>
           <div className="sign-in-info ">
             <div className="">
               <label htmlFor="email">信箱</label>
