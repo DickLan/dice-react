@@ -4,7 +4,9 @@ import { useRouter } from "next/router";
 import { apiHelper } from "@/utils/helpers";
 import { Toast } from "@/composables/toast";
 import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 export default function SingIn() {
+  const { isAuthenticated, login } = useAuth();
   const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
@@ -31,6 +33,7 @@ export default function SingIn() {
       // 登入成功後 將 token 存在 local storage
       // localStorage.setToken(data.token);\
       localStorage.setItem("token", data.token);
+      login(); // 將全局登入狀態改為 true
       // 將 user 存在 狀態管理器中
       // 要再查一下 react 怎麼處理這部分
 
@@ -63,6 +66,7 @@ export default function SingIn() {
       <div className="container">
         <div className="form-page-title">
           <h1>登入</h1>
+          <h2>isAuthenticated in Signin:{isAuthenticated.toString()}</h2>
         </div>
         {/*  @submit.prevent.stop="handleSubmit" */}
         {/* react 可以用 onSubmit來執行函示 或是 action來執行Url */}

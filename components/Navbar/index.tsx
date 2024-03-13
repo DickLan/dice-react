@@ -20,7 +20,7 @@ export default function Navbar() {
             <Link href="/">十八仔</Link>
             {/*  3洗芭樂 */}
           </nav>
-          <h2>isAuthenticated:{isAuthenticated.toString()}</h2>
+          <h2>isAuthenticated in Navbar:{isAuthenticated.toString()}</h2>
         </div>
 
         <div className="nav-mid">
