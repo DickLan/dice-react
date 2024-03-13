@@ -1,7 +1,10 @@
 import style from "./signUp.module.css";
 import React, { FormEvent, useState } from "react";
-
+import { useRouter } from "next/router";
+import { apiHelper } from "@/utils/helpers";
+import { Toast } from "@/composables/toast";
 export default function SignUp() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
     account: "",
@@ -10,11 +13,44 @@ export default function SignUp() {
     confirmPassword: "",
     gender: "",
   });
+  const [isProcessing, setIsProcessing] = useState(false);
   // signup form submit
-  const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("formData", formData);
+    // console.log("formData", formData);
+    try {
+      setIsProcessing(!isProcessing);
+
+      // 兩次密碼比較
+      if (formData.password !== formData.confirmPassword) {
+        Toast.fire({
+          icon: "error",
+          title: "兩次密碼輸入不同",
+        });
+        setIsProcessing(!isProcessing);
+        return;
+      }
+
+      // 創建使用者
+      const user = await apiHelper.post("/users", formData);
+      // console.log(user)
+      // 這裡的錯誤偵測 是針對 apiHelper.post 的結果
+      if (!user) {
+        Toast.fire({
+          icon: "error",
+          title: "註冊失敗",
+        });
+        setIsProcessing(!isProcessing);
+        return;
+      }
+
+      Toast.fire({
+        icon: "success",
+        title: "註冊成功",
+      });
+      router.push("/signIn");
+    } catch (error) {}
   };
 
   // 為 event 類型加註 HTMLFormElement，因為有 select 項目
@@ -46,7 +82,7 @@ export default function SignUp() {
         </div>
 
         {/* vue: @submit.stop.prevent="handleSubmit" */}
-        <form className="form-control" onSubmit={handleSignUp}>
+        <form className="form-control" onSubmit={handleSubmit}>
           <div className="sign-up-info ">
             <div className="">
               {/* htmlFor 要和 Input Id對應 */}
@@ -98,12 +134,12 @@ export default function SignUp() {
             </div>
 
             <div className="">
-              <label htmlFor="confrimPassword">確認密碼</label>
+              <label htmlFor="confirmPassword">確認密碼</label>
               <input
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                name="confrimPassword"
-                id="confrimPassword"
+                name="confirmPassword"
+                id="confirmPassword"
                 type="password"
                 placeholder="請再次輸入密碼"
               />
