@@ -66,7 +66,7 @@ export default function SingIn() {
       <div className="container">
         <div className="form-page-title">
           <h1>登入</h1>
-          <h2>isAuthenticated in Signin:{isAuthenticated.toString()}</h2>
+          {/* <h2>isAuthenticated in Signin:{isAuthenticated.toString()}</h2> */}
         </div>
         {/*  @submit.prevent.stop="handleSubmit" */}
         {/* react 可以用 onSubmit來執行函示 或是 action來執行Url */}

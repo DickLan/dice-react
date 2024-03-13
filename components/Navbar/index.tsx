@@ -5,6 +5,17 @@ import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 export default function Navbar() {
   const { isAuthenticated, logout } = useAuth();
+  // 為了 JSX 版面整潔，將 auth 條件渲染提取到變數中
+  const authLink = isAuthenticated ? (
+    <button className={style["auth-logout"]} onClick={logout}>
+      登出
+    </button>
+  ) : (
+    <Link className={style["auth-a"]} href="/signIn">
+      登入
+    </Link>
+  );
+
   return (
     <>
       <div className={style.wrapper}>
@@ -20,7 +31,7 @@ export default function Navbar() {
             <Link href="/">十八仔</Link>
             {/*  3洗芭樂 */}
           </nav>
-          <h2>isAuthenticated in Navbar:{isAuthenticated.toString()}</h2>
+          {/* <h2>isAuthenticated in Navbar:{isAuthenticated.toString()}</h2> */}
         </div>
 
         <div className="nav-mid">
@@ -38,16 +49,8 @@ export default function Navbar() {
             1. 重新定另一個名稱
             2. global css
             */}
-            <Link
-              className={style["auth-a"]}
-              v-if="!authStore.isAuthenticated"
-              href="/signIn"
-            >
-              登入
-            </Link>
-            <button className={style["auth-logout"]} onClick={logout}>
-              登出
-            </button>
+            {authLink}
+
             <Link className={style["auth-a"]} href="/signUp">
               註冊
             </Link>
