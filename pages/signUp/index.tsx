@@ -1,3 +1,4 @@
+import style from "./signUp.module.css";
 import React, { FormEvent, useState } from "react";
 
 export default function SignUp() {
@@ -60,7 +61,7 @@ export default function SignUp() {
               />
             </div>
 
-            <div v-if="false" className="">
+            {/* <div v-if="false" className="">
               <label htmlFor="account">帳號</label>
               <input
                 value={formData.account}
@@ -70,7 +71,7 @@ export default function SignUp() {
                 type="text"
                 placeholder="請輸入帳號"
               />
-            </div>
+            </div> */}
 
             <div className="">
               <label htmlFor="email">信箱</label>

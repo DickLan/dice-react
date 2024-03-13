@@ -26,7 +26,6 @@
   box-sizing: border-box;
   /* 防止内边距和边框影响总宽度 */
   font-size: 18px;
-
 }
 
 .form-control label {
@@ -73,7 +72,9 @@
   background-color: #93731c;
   padding: 10px;
   font-size: 18px;
-  transition: background-color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .avatar-img-part img {
