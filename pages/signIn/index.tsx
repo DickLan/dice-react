@@ -1,4 +1,4 @@
-import "@/pages/signIn/signIn.module.css"
+import style from "@/pages/signIn/signIn.module.css";
 import React, { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import { Toast } from "../../composables/toast";
@@ -15,7 +15,7 @@ export default function SingIn() {
     e.preventDefault();
     e.stopPropagation();
     // console.log("handleSignIn", e.target);
-    console.log('formData', formData);
+    console.log("formData", formData);
     try {
       console.log("handleSignIn");
       const response = await apiHelper.post("/signIn", formData);
@@ -67,7 +67,6 @@ export default function SingIn() {
         {/* react 可以用 onSubmit來執行函示 或是 action來執行Url */}
         <form className="form-control" onSubmit={handleSignIn}>
           <div className="sign-in-info ">
-
             <div className="">
               <label htmlFor="email">信箱</label>
               <input
@@ -95,9 +94,13 @@ export default function SingIn() {
           <button type="submit">登入</button>
         </form>
 
-        <div className="redirect">
-          <Link href="/signUp"  >新會員註冊</Link>
-          <Link href="/forgetPassword">忘記密碼</Link>
+        <div className={style.redirect}>
+          <Link className={style["redirect-a"]} href="/signUp">
+            新會員註冊
+          </Link>
+          <Link className={style["redirect-a"]} href="/forgetPassword">
+            忘記密碼
+          </Link>
         </div>
       </div>
     </>
