@@ -13,6 +13,10 @@
   align-items: center;
 }
 
+.nav-right {
+  margin-right: 2rem;
+}
+
 .logo {
   width: 2.5rem;
   margin: 0.3rem 1rem;
@@ -26,4 +30,15 @@
 .auth-a {
   margin: 0 1rem;
   /* background-color: #4709aa; */
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.auth-logout {
+  margin: 0 1rem;
+  font-size: 16px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  /* color: rgb(168, 26, 26); */
 }

@@ -4,7 +4,7 @@ import Image from "next/image";
 // 加入自訂 hook - useAuth 方便全局狀態管理與應用
 import { useAuth } from "@/context/AuthContext";
 export default function Navbar() {
-  const { isAuthenticated, login, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   return (
     <>
       <div className={style.wrapper}>
@@ -45,7 +45,9 @@ export default function Navbar() {
             >
               登入
             </Link>
-            {/* <button v-else @click="authStore.clearToken">登出</button> */}
+            <button className={style["auth-logout"]} onClick={logout}>
+              登出
+            </button>
             <Link className={style["auth-a"]} href="/signUp">
               註冊
             </Link>
