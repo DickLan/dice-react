@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "@/pages/home.module.css";
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import io from "socket.io-client";
 import { apiHelper } from "@/utils/helpers";
@@ -10,6 +10,7 @@ import { useAuth } from "@/context/AuthContext";
 // font 字型，暫時先不用
 // import { Inter } from "next/font/google";
 // const inter = Inter({ subsets: ["latin"] });
+import { Socket } from "socket.io-client";
 
 export default function Home() {
   const [isAbleToRollDice, setIsAbleToRollDice] = useState(true);
@@ -20,13 +21,12 @@ export default function Home() {
   // 從 context 獲取當前用戶的 ID
   const currentUser = { id: "當前用戶 ID", name: "dummy" };
   const { isAuthenticated } = useAuth();
-  
-  // 使用 useRef 來創建對象，並保持對 socket 的飲用，這樣整個元件都可訪問相同狀態的　socket
-  const socketRef = useRef(null)
 
+  // 使用 useRef 來創建對象，並保持對 socket 的飲用，這樣整個元件都可訪問相同狀態的　socket
+  const socketRef = useRef<Socket | null>(null);
+  const socketURL = process.env.NEXT_PUBLIC_URL || "http://localhost:3003";
   useEffect(() => {
     // 掛載時設定 socket 事件監聽器
-      const socketURL = process.env.NEXT_PUBLIC_URL || "http://localhost:3003";
 
     const token = localStorage.getItem("token");
     console.log("socketURL", socketURL);
@@ -36,24 +36,32 @@ export default function Home() {
         token: token,
       },
     });
-    socketRef.current.on("queueStatusUpdateFromServer", (data) => {
-      if (
-        data.queueIdAndName.length > 0 &&
-        data.queueId.includes(currentUser.id)
-      ) {
-        const displayStatus =
-          data.queueIdAndName[0].id === currentUser.id ? "輪到你辣" : "等待中";
-        setQueueStatusDisplay(displayStatus);
-        setIsAbleToRollDice(data.queueIdAndName[0].id === currentUser.id);
-      } else {
-        setIsAbleToRollDice(false);
-        setQueueStatusDisplay("可加入");
-      }
-      setQueueingUsers(data.queueIdAndName);
-    });
+    socketRef.current.on(
+      "queueStatusUpdateFromServer",
+      (data) => {
+        if (
+          data.queueIdAndName.length > 0 &&
+          data.queueId.includes(currentUser.id)
+        ) {
+          const displayStatus =
+            data.queueIdAndName[0].id === currentUser.id
+              ? "輪到你辣"
+              : "等待中";
+          setQueueStatusDisplay(displayStatus);
+          setIsAbleToRollDice(data.queueIdAndName[0].id === currentUser.id);
+        } else {
+          setIsAbleToRollDice(false);
+          setQueueStatusDisplay("可加入");
+        }
+        setQueueingUsers(data.queueIdAndName);
+      },
+      [currentUser.id, currentUser.name] // 在依賴陣列中新增 currentUser.id => 當ID改變時，會重新執行
+    );
     // 卸載時移除事件監聽器
     return () => {
-      socketRef.current.off("queueStatusUpdateFromServer");
+      if (socketRef.current) {
+        socketRef.current.off("queueStatusUpdateFromServer");
+      }
     };
   }, []);
 
@@ -73,7 +81,9 @@ export default function Home() {
     setIsQueueing(true); // 排隊中 ＝ｔｒｕｅ
     const { id, name } = currentUser;
     console.log("id=", id);
-    socket.emit("joinQueue", { id, name });
+    if (socketRef.current) {
+      socketRef.current.emit("joinQueue", { id, name });
+    }
   }
 
   const rollDice = (i: number) => {
