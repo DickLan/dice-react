@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "@/pages/home.module.css";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import io from "socket.io-client";
 import { apiHelper } from "@/utils/helpers";
@@ -12,11 +12,15 @@ import { useAuth } from "@/context/AuthContext";
 // const inter = Inter({ subsets: ["latin"] });
 import { Socket } from "socket.io-client";
 
+type User = {
+  id: string;
+  name: string;
+};
 export default function Home() {
   const [isAbleToRollDice, setIsAbleToRollDice] = useState(true);
   const [timeDisplay, setTimeDisplay] = useState(60);
   const [queueStatusDisplay, setQueueStatusDisplay] = useState("等待中");
-  const [queueingUsers, setQueueingUsers] = useState([]);
+  const [queueingUsers, setQueueingUsers] = useState<User[]>([]);
   const [isQueueing, setIsQueueing] = useState(false);
   // 從 context 獲取當前用戶的 ID
   const currentUser = { id: "當前用戶 ID", name: "dummy" };
@@ -58,7 +62,7 @@ export default function Home() {
       }
     };
   }, [currentUser.id]); // 在依賴陣列中新增 currentUser.id
-  // 其他程式碼...
+
   // 排隊方法
   function joinQueue() {
     console.log("socketURL=", socketURL);
@@ -80,10 +84,79 @@ export default function Home() {
     }
   }
 
-  const rollDice = (i: number) => {
-    console.log(`骰子 ${i} 被骰出`);
-    // 下面是骰骰子的邏輯
-  };
+  // 骰骰子邏輯
+  async function rollDice(i: number) {
+    try {
+      // 創建一個 promise 來等待伺服器的回應
+      const waitForResponse = new Promise<any>((resolve, reject) => {
+        if (socketRef.current) {
+          socketRef.current.once("beforeUserRollDiceQueueCheck", (data) => {
+            console.log("data", data);
+            resolve(data); // 使用服務器的響應解決 Promise
+          });
+
+          // 發送檢查排隊序列的請求到服務器
+          socketRef.current.emit("beforeUserRollDiceQueueCheck", {
+            id: currentUser.id,
+          });
+        }
+      });
+
+      const checkResultResponse = await waitForResponse; // 等待服務器回應
+      if (!checkResultResponse) {
+        Toast.fire({
+          icon: "error",
+          title: "骰骰子失敗2",
+        });
+      }
+      // if server return true msg
+      // 伺服器比較正確 才得到 true ，才能骰骰子
+      if (checkResultResponse.msg === "True") {
+        console.log("YY");
+
+        // 比對正確 開始操作 PLC
+        // 因為目前連不到 cbeh 所以先註解掉
+        // const response = await apiHelper.post(`/plc/setM/10${i}`)
+        const response = await apiHelper.post(`/plc/setM/0`);
+        console.log("response.data.msg", response.data.msg);
+        if (!response.data) {
+          Toast.fire({
+            icon: "error",
+            title: "骰骰子失敗",
+          });
+          setIsAbleToRollDice(false);
+          return;
+        }
+      } else {
+        console.log("NN");
+        // else server return false msg
+      }
+
+      // console.log('checkResultResponse', checkResultResponse);
+
+      if (socketRef.current) {
+        socketRef.current.emit("userRollDice", {
+          id: currentUser.id,
+        });
+      }
+      // console.log('checked!!!!!!');
+      setIsAbleToRollDice(false);
+    } catch (error) {
+      console.log("error", error);
+      setIsAbleToRollDice(true);
+    }
+  }
+
+  // computed => useMemo
+  const queueStatusClass = useMemo(() => {
+    if (queueStatusDisplay === "等待中") {
+      return "queueStatusDisplay-waiting";
+    } else if (queueStatusDisplay === "輪到你辣") {
+      return "queueStatusDisplay-playing";
+    } else if (queueStatusDisplay === "可加入") {
+      return "queueStatusDisplay-ready";
+    }
+  }, [queueStatusDisplay]);
 
   return (
     <>
@@ -131,15 +204,19 @@ export default function Home() {
           {/* 排隊佇列顯示 */}
           {/* 先把畫面框架移植完 再來處理有動態變數的部分 圖像辨識骰子紀錄，如果目前做不出來，可以先弄假資料在 db，重點是學習處理動態資料*/}
           <div className={styles["queue-wrapper"]}>
-            {/* <button @click="joinQueue">開始排隊</button> */}
+            <button onClick={joinQueue}>開始排隊</button>
             {/* // <!-- 排隊狀態顯示 --> */}
             <h3>可遊玩秒數</h3>
             <h4>{timeDisplay} s</h4>
             <p className="queueStatusClass">狀態: {queueStatusDisplay} </p>
-            {/* // <!-- 排隊佇列顯示 -->
-        // <ul>
-        // </ul>
-        // <li v-for="(user, index) in queueingUsers" :key="user.id">順序 {{ index + 1 }} : {{ user.name }}</li> */}
+            {/* <!-- 排隊佇列顯示 --> */}
+            <ul>
+              {queueingUsers.map((user, index) => (
+                <li key={user.id}>
+                  順序 {index + 1} : {user.name}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
