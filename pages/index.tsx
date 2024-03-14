@@ -1,9 +1,12 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "@/pages/home.module.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import Link from "next/link";
-
+import io from "socket.io-client";
+import { apiHelper } from "@/utils/helpers";
+import { Toast } from "@/composables/toast";
+import { useAuth } from "@/context/AuthContext";
 // font 字型，暫時先不用
 // import { Inter } from "next/font/google";
 // const inter = Inter({ subsets: ["latin"] });
@@ -12,11 +15,72 @@ export default function Home() {
   const [isAbleToRollDice, setIsAbleToRollDice] = useState(true);
   const [timeDisplay, setTimeDisplay] = useState(60);
   const [queueStatusDisplay, setQueueStatusDisplay] = useState("等待中");
+  const [queueingUsers, setQueueingUsers] = useState([]);
+  const [isQueueing, setIsQueueing] = useState(false);
+  // 從 context 獲取當前用戶的 ID
+  const currentUser = { id: "當前用戶 ID", name: "dummy" };
+  const { isAuthenticated } = useAuth();
+  
+  // 使用 useRef 來創建對象，並保持對 socket 的飲用，這樣整個元件都可訪問相同狀態的　socket
+  const socketRef = useRef(null)
+
+  useEffect(() => {
+    // 掛載時設定 socket 事件監聽器
+      const socketURL = process.env.NEXT_PUBLIC_URL || "http://localhost:3003";
+
+    const token = localStorage.getItem("token");
+    console.log("socketURL", socketURL);
+    socketRef.current = io(`${socketURL}`, {
+      path: "/api/socket.io",
+      auth: {
+        token: token,
+      },
+    });
+    socketRef.current.on("queueStatusUpdateFromServer", (data) => {
+      if (
+        data.queueIdAndName.length > 0 &&
+        data.queueId.includes(currentUser.id)
+      ) {
+        const displayStatus =
+          data.queueIdAndName[0].id === currentUser.id ? "輪到你辣" : "等待中";
+        setQueueStatusDisplay(displayStatus);
+        setIsAbleToRollDice(data.queueIdAndName[0].id === currentUser.id);
+      } else {
+        setIsAbleToRollDice(false);
+        setQueueStatusDisplay("可加入");
+      }
+      setQueueingUsers(data.queueIdAndName);
+    });
+    // 卸載時移除事件監聽器
+    return () => {
+      socketRef.current.off("queueStatusUpdateFromServer");
+    };
+  }, []);
+
+  // 排隊方法
+  function joinQueue() {
+    console.log("socketURL=", socketURL);
+    // 啟動排隊邏輯
+    // 登入後才能排隊
+    if (!isAuthenticated) {
+      Toast.fire({
+        icon: "error",
+        title: "請先登入才能開始排隊",
+      });
+      return;
+    }
+    // 確認登入 開啟排隊邏輯
+    setIsQueueing(true); // 排隊中 ＝ｔｒｕｅ
+    const { id, name } = currentUser;
+    console.log("id=", id);
+    socket.emit("joinQueue", { id, name });
+  }
 
   const rollDice = (i: number) => {
     console.log(`骰子 ${i} 被骰出`);
-    // 這裡實現你骰骰子的邏輯
+    // 下面是骰骰子的邏輯
   };
+
   return (
     <>
       <Head>
@@ -52,7 +116,7 @@ export default function Home() {
             <iframe
               width="500"
               height="315"
-              src="https://www.youtube.com/embed/ENrW13a7TEg?si=vKM3ScXyVhn3g04Y&autoplay=0&mute=1"
+              src="https://www.youtube.com/embed/CSl5Cbkego8?si=Mv_w-sgXV-0_l-0h&autoplay=1&mute=1"
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -61,7 +125,7 @@ export default function Home() {
           </div>
 
           {/* 排隊佇列顯示 */}
-          {/* 先把畫面框架移植完 再來處理有動態變數的部分 */}
+          {/* 先把畫面框架移植完 再來處理有動態變數的部分 圖像辨識骰子紀錄，如果目前做不出來，可以先弄假資料在 db，重點是學習處理動態資料*/}
           <div className={styles["queue-wrapper"]}>
             {/* <button @click="joinQueue">開始排隊</button> */}
             {/* // <!-- 排隊狀態顯示 --> */}

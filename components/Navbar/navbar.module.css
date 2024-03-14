@@ -13,6 +13,10 @@
   align-items: center;
 }
 
+.nav-mid-link{
+  margin: 0 1rem;
+}
+
 .nav-right {
   margin-right: 2rem;
 }
