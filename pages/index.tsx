@@ -22,7 +22,7 @@ export default function Home() {
   const currentUser = { id: "當前用戶 ID", name: "dummy" };
   const { isAuthenticated } = useAuth();
 
-  // 使用 useRef 來創建對象，並保持對 socket 的飲用，這樣整個元件都可訪問相同狀態的　socket
+  // 使用 useRef 來創建對象，並保持對 socket 的引用，這樣整個元件都可訪問相同狀態的 socket
   const socketRef = useRef<Socket | null>(null);
   const socketURL = process.env.NEXT_PUBLIC_URL || "http://localhost:3003";
   useEffect(() => {
@@ -36,35 +36,29 @@ export default function Home() {
         token: token,
       },
     });
-    socketRef.current.on(
-      "queueStatusUpdateFromServer",
-      (data) => {
-        if (
-          data.queueIdAndName.length > 0 &&
-          data.queueId.includes(currentUser.id)
-        ) {
-          const displayStatus =
-            data.queueIdAndName[0].id === currentUser.id
-              ? "輪到你辣"
-              : "等待中";
-          setQueueStatusDisplay(displayStatus);
-          setIsAbleToRollDice(data.queueIdAndName[0].id === currentUser.id);
-        } else {
-          setIsAbleToRollDice(false);
-          setQueueStatusDisplay("可加入");
-        }
-        setQueueingUsers(data.queueIdAndName);
-      },
-      [currentUser.id, currentUser.name] // 在依賴陣列中新增 currentUser.id => 當ID改變時，會重新執行
-    );
+    socketRef.current.on("queueStatusUpdateFromServer", (data) => {
+      if (
+        data.queueIdAndName.length > 0 &&
+        data.queueId.includes(currentUser.id)
+      ) {
+        const displayStatus =
+          data.queueIdAndName[0].id === currentUser.id ? "輪到你辣" : "等待中";
+        setQueueStatusDisplay(displayStatus);
+        setIsAbleToRollDice(data.queueIdAndName[0].id === currentUser.id);
+      } else {
+        setIsAbleToRollDice(false);
+        setQueueStatusDisplay("可加入");
+      }
+      setQueueingUsers(data.queueIdAndName);
+    });
     // 卸載時移除事件監聽器
     return () => {
       if (socketRef.current) {
         socketRef.current.off("queueStatusUpdateFromServer");
       }
     };
-  }, []);
-
+  }, [currentUser.id]); // 在依賴陣列中新增 currentUser.id
+  // 其他程式碼...
   // 排隊方法
   function joinQueue() {
     console.log("socketURL=", socketURL);
