@@ -1,4 +1,4 @@
-import style from "@/components/Navbar/navbar.module.css";
+import style from "@/components/navbar/navbar.module.css";
 import Link from "next/link";
 import Image from "next/image";
 // 加入自訂 hook - useAuth 方便全局狀態管理與應用

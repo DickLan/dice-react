@@ -10,6 +10,7 @@ import { useAuth } from "@/context/AuthContext";
 // import { Inter } from "next/font/google";
 // const inter = Inter({ subsets: ["latin"] });
 import { Socket } from "socket.io-client";
+import Spinner from "@/components/spinner/index"
 
 type User = {
   id: string;
@@ -26,12 +27,21 @@ export default function Home() {
   // 從 useAuth 提取當前使用者，並命名成 authUser，避免衝突
   const { isAuthenticated,currentUser:authUser } = useAuth();
   let currentUser= { id: -1, name: "初始匿名用戶" }
+
+  // 因為 youtube 直撥延遲有點久，新增個 spinner
+  // 合理化等待時間，收到成功骰骰子的訊息後，才會顯示約兩秒
+  const [isSpinning,setIsSpinning]= useState(false)
+
   if (isAuthenticated){
      currentUser= authUser
   }
+
+
   // 使用 useRef 來創建對象，並保持對 socket 的引用，這樣整個元件都可訪問相同狀態的 socket
   const socketRef = useRef<Socket | null>(null);
   const socketURL = process.env.NEXT_PUBLIC_URL || "http://localhost:3003";
+
+
   useEffect(() => {
     // 掛載時設定 socket 事件監聽器
 
@@ -130,10 +140,32 @@ export default function Home() {
           id: currentUser.id,
         });
       }
+
+      // 拖延時間的 spinner 處理邏輯
+      setIsSpinning(true)
+      setTimeout(()=>{
+        setIsSpinning(false)
+        Toast.fire({
+          icon: 'success',
+          title:'驗證成功，啟動！'
+      })
+      },2000)
       setIsAbleToRollDice(false);
+
+
     } catch (error) {
       console.log("error", error);
       setIsAbleToRollDice(true);
+
+      setIsSpinning(true)
+      setTimeout(()=>{
+        setIsSpinning(false)
+      },2000)
+      setIsAbleToRollDice(false);
+      Toast.fire({
+        icon: 'error',
+        title:'驗證失敗！'
+      })
     }
   }
 
@@ -159,11 +191,17 @@ export default function Home() {
       </Head>
 
       <div className="container">
+        {/* react 元件，若要接受 style屬性，必須先在 Spinner 定義 property type */}
+        {/* <Spinner style={{display:true?1:2}}/> */}
+        <Spinner style={{ display: isSpinning ? "flex" : "none" }} />
+
         <div className="intro">
           <h2>哈囉 {currentUser.name}</h2>
           <h3>歡迎來到十八仔</h3>
-          <span>骰一次 10 元，骰到 666 時，可以到 </span>
+
           {/* 因為是連到外部網站 所以這裡不用 Link, 直接用 <a> */}
+
+          <span>骰一次 10 元，骰到 666 時，可以到 </span>
           <a
             className={styles["outside-link"]}
             href="https://www.littlesheng.com/accounts"
@@ -172,8 +210,9 @@ export default function Home() {
           </a>
           <span> 兌換任何一個八千元以下寶可夢帳號</span>
           <br />
-          <span> 其他三連號可兌換四千元以下寶可夢帳號</span>
-          <h4>{"登入=>排隊=>骰骰子(十秒內必須骰出)"}</h4>
+          {/* <span> 其他三連號可兌換四千元以下寶可夢帳號</span> */}
+
+          <h4>{"操作流程：登入 => 排隊 => 骰骰子 (十秒內必須骰出)"}</h4>
         </div>
 
         {/* youtube 轉播畫面 */}
