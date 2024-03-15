@@ -2,7 +2,6 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "@/pages/home.module.css";
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import Link from "next/link";
 import io from "socket.io-client";
 import { apiHelper } from "@/utils/helpers";
 import { Toast } from "@/composables/toast";
@@ -22,10 +21,14 @@ export default function Home() {
   const [queueStatusDisplay, setQueueStatusDisplay] = useState("等待中");
   const [queueingUsers, setQueueingUsers] = useState<User[]>([]);
   const [isQueueing, setIsQueueing] = useState(false);
-  // 從 context 獲取當前用戶的 ID
-  const currentUser = { id: "當前用戶 ID", name: "dummy" };
-  const { isAuthenticated } = useAuth();
-
+  // 稍後從 context 獲取當前用戶的 ID
+  // const currentUser = { id: "當前用戶 ID", name: "dummy" };
+  // 從 useAuth 提取當前使用者，並命名成 authUser，避免衝突
+  const { isAuthenticated,currentUser:authUser } = useAuth();
+  let currentUser= { id: -1, name: "初始匿名用戶" }
+  if (isAuthenticated){
+     currentUser= authUser
+  }
   // 使用 useRef 來創建對象，並保持對 socket 的引用，這樣整個元件都可訪問相同狀態的 socket
   const socketRef = useRef<Socket | null>(null);
   const socketURL = process.env.NEXT_PUBLIC_URL || "http://localhost:3003";
@@ -61,7 +64,7 @@ export default function Home() {
         socketRef.current.off("queueStatusUpdateFromServer");
       }
     };
-  }, [currentUser.id]); // 在依賴陣列中新增 currentUser.id
+  }, [currentUser]); // 在依賴陣列中新增 currentUser.id
 
   // 排隊方法
   function joinQueue() {
@@ -110,36 +113,23 @@ export default function Home() {
         });
       }
       // if server return true msg
-      // 伺服器比較正確 才得到 true ，才能骰骰子
-      if (checkResultResponse.msg === "True") {
+      // 伺服器比較正確 會得到 true ，才能骰骰子
+      if (checkResultResponse.msg !== "True") {
         console.log("YY");
 
-        // 比對正確 開始操作 PLC
-        // 因為目前連不到 cbeh 所以先註解掉
-        // const response = await apiHelper.post(`/plc/setM/10${i}`)
-        const response = await apiHelper.post(`/plc/setM/0`);
-        console.log("response.data.msg", response.data.msg);
-        if (!response.data) {
-          Toast.fire({
-            icon: "error",
-            title: "骰骰子失敗",
-          });
-          setIsAbleToRollDice(false);
-          return;
-        }
-      } else {
-        console.log("NN");
-        // else server return false msg
-      }
+        console.log("順序比對錯誤");
+        setIsAbleToRollDice(false);
+        return;
+        
+      } 
 
-      // console.log('checkResultResponse', checkResultResponse);
 
+      // 取消 api 驅動骰子，改用 socket 驅動，因為之前後端已經寫好 socket 順序檢查
       if (socketRef.current) {
         socketRef.current.emit("userRollDice", {
           id: currentUser.id,
         });
       }
-      // console.log('checked!!!!!!');
       setIsAbleToRollDice(false);
     } catch (error) {
       console.log("error", error);
@@ -170,6 +160,7 @@ export default function Home() {
 
       <div className="container">
         <div className="intro">
+          <h2>哈囉 {currentUser.name}</h2>
           <h3>歡迎來到十八仔</h3>
           <span>骰一次 10 元，骰到 666 時，可以到 </span>
           {/* 因為是連到外部網站 所以這裡不用 Link, 直接用 <a> */}
@@ -193,7 +184,7 @@ export default function Home() {
             <iframe
               width="500"
               height="315"
-              src="https://www.youtube.com/embed/CSl5Cbkego8?si=Mv_w-sgXV-0_l-0h&autoplay=1&mute=1"
+              src="https://www.youtube.com/embed/RBGhuKsqbxs?si=zfskt-vJi4OFDHHD&autoplay=1&mute=1"
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
