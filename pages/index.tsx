@@ -64,7 +64,7 @@ export default function Home() {
         socketRef.current.off("queueStatusUpdateFromServer");
       }
     };
-  }, [currentUser]); // 在依賴陣列中新增 currentUser.id
+  }, []); // 在依賴陣列中新增 currentUser.id
 
   // 排隊方法
   function joinQueue() {
