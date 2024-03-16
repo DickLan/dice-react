@@ -55,8 +55,7 @@ export default function Home() {
     });
     socketRef.current.on("queueStatusUpdateFromServer", (data) => {
       if (
-        data.queueIdAndName.length > 0 &&
-        data.queueId.includes(currentUser.id)
+        data.queueIdAndName.length > 0 && data.queueId && data.queueId.includes(currentUser.id)
       ) {
         const displayStatus =
           data.queueIdAndName[0].id === currentUser.id ? "輪到你辣" : "等待中";
@@ -68,6 +67,19 @@ export default function Home() {
       }
       setQueueingUsers(data.queueIdAndName);
     });
+
+      // 初始掛載 timer,每秒向伺服器更新剩餘遊玩秒數
+      const interval = setInterval(()=>{
+          if(socketRef.current){
+            console.log('requestCountdown emitted')
+          socketRef.current.emit('requestCountdown')
+        }
+      },1000)
+
+      socketRef.current.on("updateCountdown",(data)=>{
+        setTimeDisplay(data.countdown)
+      })
+  
     // 卸載時移除事件監聽器
     return () => {
       if (socketRef.current) {
@@ -179,6 +191,8 @@ export default function Home() {
       return "queueStatusDisplay-ready";
     }
   }, [queueStatusDisplay]);
+
+
 
   return (
     <>
