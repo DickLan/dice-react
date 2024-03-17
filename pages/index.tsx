@@ -18,7 +18,7 @@ type User = {
 };
 export default function Home() {
   const [isAbleToRollDice, setIsAbleToRollDice] = useState(true);
-  const [timeDisplay, setTimeDisplay] = useState(60);
+  const [timeDisplay, setTimeDisplay] = useState(10);
   const [queueStatusDisplay, setQueueStatusDisplay] = useState("等待中");
   const [queueingUsers, setQueueingUsers] = useState<User[]>([]);
   const [isQueueing, setIsQueueing] = useState(false);
@@ -63,22 +63,24 @@ export default function Home() {
         setIsAbleToRollDice(data.queueIdAndName[0].id === currentUser.id);
       } else {
         setIsAbleToRollDice(false);
+        // 後端 socket 倒數完後，也清除前端秒數
+        setTimeDisplay(0)
         setQueueStatusDisplay("可加入");
       }
       setQueueingUsers(data.queueIdAndName);
     });
 
-      // 初始掛載 timer,每秒向伺服器更新剩餘遊玩秒數
-      const interval = setInterval(()=>{
-          if(socketRef.current){
-            console.log('requestCountdown emitted')
-          socketRef.current.emit('requestCountdown')
-        }
-      },1000)
+    // 初始掛載 timer,每秒向伺服器更新剩餘遊玩秒數
+    const interval = setInterval(()=>{
+        if(socketRef.current){
+          console.log('requestCountdown emitted')
+        socketRef.current.emit('requestCountdown')
+      }
+    },1000)
 
-      socketRef.current.on("updateCountdown",(data)=>{
-        setTimeDisplay(data.countdown)
-      })
+    socketRef.current.on("updateCountdown",(data)=>{
+      setTimeDisplay(data.countdown)
+    })
   
     // 卸載時移除事件監聽器
     return () => {
