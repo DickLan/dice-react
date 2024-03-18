@@ -112,10 +112,10 @@ export default function Home() {
               {/* <!-- 排隊佇列顯示 --> */}
               <p className={styles.queueStatusClass}> 排隊狀態</p>
               <p> {queueStatusDisplay} </p>
-              <ul>
+              <ul className="queue-user-names">
                 {queueingUsers.map((user, index) => (
                   <li key={user.id}>
-                    順序 {index + 1} : {user.name}
+                    {index + 1} - {user.name}
                   </li>
                 ))}
               </ul>

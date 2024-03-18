@@ -61,10 +61,7 @@ const useSocket = (currentUser: User, isAuthenticated: boolean) => {
         setQueueStatusDisplay("可加入");
       }
       setQueueingUsers(data.queueIdAndName);
-      // 第一次載入 將 loading 設為 false，表示已經成功載入
-      if (isPageLoading){
-        setIsPageLoading(false)
-      }
+
     });
 
     // 初始掛載 timer,每秒向伺服器更新剩餘遊玩秒數
@@ -79,7 +76,10 @@ const useSocket = (currentUser: User, isAuthenticated: boolean) => {
       setTimeDisplay(data.countdown);
     });
 
-    
+          // 第一次載入 將 loading 設為 false，表示已經成功載入
+      if (isPageLoading){
+        setIsPageLoading(false)
+      }
     // 卸載時移除事件監聽器
     return () => {
       if (socketRef.current) {

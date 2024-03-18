@@ -11,10 +11,10 @@ export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // 登入與登出的方法
-  const login = () => setIsAuthenticated(true);
+ const login = () => setIsAuthenticated(true);
   const logout = () => setIsAuthenticated(false);
 
-  const [currentUser, setCurrentUser] = useState({name: "empty", id: 1});
+  const [currentUser, setCurrentUser] = useState({name: "empty", id: -1});
 
 
 
@@ -24,8 +24,10 @@ export function AuthProvider({ children }) {
     
   const fetchData = async () => {
     const response = await apiHelper.get("/fetchCurrentUser");
+
     // console.log("response.data:", response.data); 
     setCurrentUser(response.data);
+
   };
   if (isAuthenticated){
     fetchData();
