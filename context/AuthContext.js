@@ -9,12 +9,20 @@ const AuthContext = createContext(); // 創建 context 對象
 // 用於將 AuthContext 的值傳給子元件
 export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState({name: "empty", id: -1});
 
   // 登入與登出的方法
- const login = () => setIsAuthenticated(true);
-  const logout = () => setIsAuthenticated(false);
+ const login = (user) => {
+  setIsAuthenticated(true)
+  localStorage.setItem('currentUser', user)
+  
+ }
+  const logout = () => {
+    setIsAuthenticated(false)
+    localStorage.removeItem('currentUser')
+    localStorage.removeItem('token')
+  };
 
-  const [currentUser, setCurrentUser] = useState({name: "empty", id: -1});
 
 
 
@@ -24,10 +32,13 @@ export function AuthProvider({ children }) {
     
   const fetchData = async () => {
     const response = await apiHelper.get("/fetchCurrentUser");
-
-    // console.log("response.data:", response.data); 
+    if (response.data) {
     setCurrentUser(response.data);
-
+    setIsAuthenticated(true);
+  } else {
+    setIsAuthenticated(false);
+  }
+    // console.log("response.data:", response.data); 
   };
   if (isAuthenticated){
     fetchData();

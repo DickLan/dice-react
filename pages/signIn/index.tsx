@@ -21,6 +21,7 @@ export default function SingIn() {
     try {
       console.log("handleSubmit");
       const response = await apiHelper.post("/signIn", formData);
+      console.log("response.data",response.data);
       if (!response.data) {
         Toast.fire({
           icon: "error",
@@ -33,7 +34,7 @@ export default function SingIn() {
       // 登入成功後 將 token 存在 local storage
       // localStorage.setToken(data.token);\
       localStorage.setItem("token", data.token);
-      login(); // 將全局登入狀態改為 true
+      login(data.user); // 將全局登入狀態改為 true
       // 將 user 存在 狀態管理器中
       // 要再查一下 react 怎麼處理這部分
 
