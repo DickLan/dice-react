@@ -21,7 +21,7 @@ export default function SingIn() {
     try {
       console.log("handleSubmit");
       const response = await apiHelper.post("/signIn", formData);
-      console.log("response.data",response.data);
+      console.log("response.data", response.data);
       if (!response.data) {
         Toast.fire({
           icon: "error",
@@ -64,8 +64,7 @@ export default function SingIn() {
 
   return (
     <>
-      <div className="container-outside">
-        <div className="container">
+
           <div className="form-page-title">
             <h1>登入</h1>
             {/* <h2>isAuthenticated in Signin:{isAuthenticated.toString()}</h2> */}
@@ -109,8 +108,7 @@ export default function SingIn() {
               忘記密碼
             </Link>
           </div>
-        </div>
-      </div>
+
     </>
   );
 }

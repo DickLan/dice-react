@@ -86,7 +86,8 @@ const useSocket = (currentUser: User, isAuthenticated: boolean) => {
         socketRef.current.off("queueStatusUpdateFromServer");
       }
     };
-  }, []); // 在依賴陣列中新增 currentUser.id
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); 
 
   // 排隊方法
   function joinQueue() {

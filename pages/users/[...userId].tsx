@@ -14,18 +14,14 @@ export default function UserPage() {
 
   return (
     <>
-      <div className="container-outside">
-        <div className="container">
-          <h1>User Page</h1>
-          <h2>測試動態路由</h2>
-          <h3>顯示不同使用者的會員資訊</h3>
+      <h1>User Page</h1>
+      <h2>測試動態路由</h2>
+      <h3>顯示不同使用者的會員資訊</h3>
 
-          <p>User ID: {Array.isArray(userId) ? userId.join("/") : userId}</p>
-          <p>User Name: {currentUser?.name}</p>
-          <p>User Mail: {currentUser?.email}</p>
-          <p>User Gender:{currentUser?.gender === 2 ? "Male" : "Female"}</p>
-        </div>
-      </div>
+      <p>User ID: {Array.isArray(userId) ? userId.join("/") : userId}</p>
+      <p>User Name: {currentUser?.name}</p>
+      <p>User Mail: {currentUser?.email}</p>
+      <p>User Gender:{currentUser?.gender === 2 ? "Male" : "Female"}</p>
     </>
   );
 }

@@ -69,44 +69,40 @@ const feeds: Feed[] = [
 export default function Feeds() {
   return (
     <>
-      <div className="container-outside">
-        <div className="container">
-          <div>Feeds</div>
-          <span>目前是假資料，後續圖形辨識加上後，再繼續更新</span>
-          <table className={styles["feeds-table"]}>
-            <tr>
-              <th className={styles["feeds-th"]}>User ID</th>
-              <th className={styles["feeds-th"]}>User Name</th>
-              <th className={styles["feeds-th"]}>Point 1</th>
-              <th className={styles["feeds-th"]}>Point 2</th>
-              <th className={styles["feeds-th"]}>Point 3</th>
-              <th className={styles["feeds-th"]}>Win/Lose</th>
-              <th className={styles["feeds-th"]}>Reward</th>
-              <th className={styles["feeds-th"]}>Date</th>
-            </tr>
-            {feeds.map((feed) => {
-              return (
-                <>
-                  <tr>
-                    <td className={styles["feeds-td"]}>{feed.userId}</td>
-                    <td className={styles["feeds-td"]}>{feed.userName}</td>
-                    <td className={styles["feeds-td"]}>{feed.point1}</td>
-                    <td className={styles["feeds-td"]}>{feed.point2}</td>
-                    <td className={styles["feeds-td"]}>{feed.point3}</td>
-                    <td
-                      className={`${styles["feeds-td"]} ${feed.isWin ? styles["win"] : styles["lose"]}`}
-                    >
-                      {feed.isWin ? "Win" : "Lose"}
-                    </td>
-                    <td className={styles["feeds-td"]}>{feed.reward}</td>
-                    <td className={styles["feeds-td"]}>{feed.date}</td>
-                  </tr>
-                </>
-              );
-            })}
-          </table>
-        </div>
-      </div>
+      <div>Feeds</div>
+      <span>目前是假資料，後續圖形辨識加上後，再繼續更新</span>
+      <table className={styles["feeds-table"]}>
+        <tr>
+          <th className={styles["feeds-th"]}>User ID</th>
+          <th className={styles["feeds-th"]}>User Name</th>
+          <th className={styles["feeds-th"]}>Point 1</th>
+          <th className={styles["feeds-th"]}>Point 2</th>
+          <th className={styles["feeds-th"]}>Point 3</th>
+          <th className={styles["feeds-th"]}>Win/Lose</th>
+          <th className={styles["feeds-th"]}>Reward</th>
+          <th className={styles["feeds-th"]}>Date</th>
+        </tr>
+        {feeds.map((feed) => {
+          return (
+            <>
+              <tr>
+                <td className={styles["feeds-td"]}>{feed.userId}</td>
+                <td className={styles["feeds-td"]}>{feed.userName}</td>
+                <td className={styles["feeds-td"]}>{feed.point1}</td>
+                <td className={styles["feeds-td"]}>{feed.point2}</td>
+                <td className={styles["feeds-td"]}>{feed.point3}</td>
+                <td
+                  className={`${styles["feeds-td"]} ${feed.isWin ? styles["win"] : styles["lose"]}`}
+                >
+                  {feed.isWin ? "Win" : "Lose"}
+                </td>
+                <td className={styles["feeds-td"]}>{feed.reward}</td>
+                <td className={styles["feeds-td"]}>{feed.date}</td>
+              </tr>
+            </>
+          );
+        })}
+      </table>
     </>
   );
 }
