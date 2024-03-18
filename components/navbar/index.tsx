@@ -16,6 +16,17 @@ export default function Navbar() {
     </Link>
   );
 
+  let currentUserInLS;
+  let currentUserId;
+  if (isAuthenticated) {
+    currentUserInLS = localStorage.getItem("currentUser");
+    if (currentUserInLS) {
+      // console.log("currentUserInLS", currentUserInLS);
+      console.log("JSON.parse(currentUserInLS)", JSON.parse(currentUserInLS));
+      currentUserId = JSON.parse(currentUserInLS).id;
+    }
+  }
+
   return (
     <>
       <div className={style.wrapper}>
@@ -35,9 +46,19 @@ export default function Navbar() {
         </div>
 
         <div className="nav-mid">
-          <Link className={style["nav-mid-link"]} href="/about">關於我們</Link>
+          {/* <Link className={style["nav-mid-link"]} href="/about">
+            關於我們
+          </Link> */}
+          <Link
+            className={style["nav-mid-link"]}
+            href={`/users/${currentUserId}`}
+          >
+            使用者資訊
+          </Link>
           {/* 最新動態 練習用  嘗試動態nextjs的渲染 可以用骰骰子紀錄來暫時做測試用 之後要拿掉 */}
-          <Link className={style["nav-mid-link"]} href="/feeds">最新動態</Link>
+          <Link className={style["nav-mid-link"]} href="/feeds">
+            最新動態
+          </Link>
         </div>
 
         {/* 如果包含特殊字符 例如`-`  要用[]來訪問 */}
