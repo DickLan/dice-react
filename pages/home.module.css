@@ -70,3 +70,28 @@
   text-decoration: none;
   color: rgb(47, 210, 228);
 }
+/* 排隊秒數 label */
+.play-time-label{
+  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #24a76c;
+}
+/* 排隊秒數 顯示  */
+.time.display{
+  /* 加上漸變色 */
+  transition: color 10s linear;
+  /* 初始顏色 */
+  color: green; 
+}
+
+.time-critical{
+  /* 終點色 */
+  color:red;
+}
+
+/* 排隊狀態 */
+.queueStatusClass{
+  font-size: 20px;
+  font-family:Arial, Helvetica, sans-serif;
+  color: #24a76c;
+}

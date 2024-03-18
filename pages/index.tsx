@@ -14,10 +14,6 @@ import Spinner from "@/components/spinner/index";
 // 之後有空要將 socket 移動到自訂 hook
 import useSocket from "@/hooks/useSocket";
 
-type User = {
-  id: number;
-  name: string;
-};
 export default function Home() {
   // 稍後從 context 獲取當前用戶的 ID
   // const currentUser = { id: "當前用戶 ID", name: "dummy" };
@@ -38,6 +34,11 @@ export default function Home() {
     joinQueue,
     rollDice,
   } = useSocket(currentUser, isAuthenticated);
+
+  // 根據 timeDisplay 的值顯示不同的顏色
+  const timeClass = useMemo(() => {
+    return timeDisplay <= 5 ? styles["time-critical"] : "";
+  }, [timeDisplay]);
 
   return (
     <>
@@ -74,8 +75,9 @@ export default function Home() {
             <h4>{"操作流程：登入 => 排隊 => 骰骰子 (十秒內必須骰出)"}</h4>
           </div>
 
-          {/* youtube 轉播畫面 */}
+          {/* video + queue status */}
           <div className={styles.content}>
+            {/* youtube 轉播畫面 */}
             <div className={styles["video-wrapper"]}>
               {/* <!-- YouTube嵌入iframe --> */}
               {/* 在 React 和 TypeScript 中使用 <iframe> 時，你需要遵循 JSX 和 TypeScript 的規範來指定屬性名=> 小駝峰命名  */}
@@ -95,10 +97,14 @@ export default function Home() {
             <div className={styles["queue-wrapper"]}>
               <button onClick={joinQueue}>開始排隊</button>
               {/* // <!-- 排隊狀態顯示 --> */}
-              <h3>可遊玩秒數</h3>
-              <h4>{timeDisplay} s</h4>
-              <p className="queueStatusClass">狀態: {queueStatusDisplay} </p>
+              <h3 className={styles["play-time-label"]}>可遊玩秒數</h3>
+              <h4 className={`${styles["time-display"]} ${timeClass}`}>
+                {timeDisplay} s
+              </h4>
+              <br />
               {/* <!-- 排隊佇列顯示 --> */}
+              <p className={styles.queueStatusClass}> 排隊狀態</p>
+              <p> {queueStatusDisplay} </p>
               <ul>
                 {queueingUsers.map((user, index) => (
                   <li key={user.id}>
