@@ -112,8 +112,8 @@ export default function Home() {
                 height="315"
                 src="https://www.youtube-nocookie.com/embed/8TN65tzvhbA?si=zfskt-vJi4OFDHHD&autoplay=1&mute=1"
                 title="YouTube video player"
-                // frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share "
                 allowFullScreen
               ></iframe>
             </div>
@@ -121,25 +121,32 @@ export default function Home() {
             {/* 排隊佇列顯示 */}
             {/* 先把畫面框架移植完 再來處理有動態變數的部分 圖像辨識骰子紀錄，如果目前做不出來，可以先弄假資料在 db，重點是學習處理動態資料*/}
             <div className={styles["queue-wrapper"]}>
-              <button className={styles["queue-button"]} onClick={joinQueue}>
-                開始排隊
-              </button>
+              <div className={styles["mobile-queue-1"]}>
+                <button className={styles["queue-button"]} onClick={joinQueue}>
+                  開始排隊
+                </button>
+              </div>
               {/* // <!-- 排隊狀態顯示 --> */}
-              <h3 className={styles["play-time-label"]}>可遊玩秒數</h3>
-              <h4 className={`${styles["time-display"]} ${timeClass}`}>
-                {timeDisplay} s
-              </h4>
+              <div className={styles["mobile-queue-2"]}>
+                <h3 className={styles["play-time-label"]}>可遊玩秒數</h3>
+                <h4 className={`${styles["time-display"]} ${timeClass}`}>
+                  {timeDisplay} s
+                </h4>
+              </div>
+
               <br />
               {/* <!-- 排隊佇列顯示 --> */}
-              <p className={styles.queueStatusClass}> 排隊狀態</p>
-              <p> {queueStatusDisplay} </p>
-              <ul className="queue-user-names">
-                {queueingUsers.map((user, index) => (
-                  <li key={user.id}>
-                    {index + 1} - {user.name}
-                  </li>
-                ))}
-              </ul>
+              <div className={styles["mobile-queue-3"]}>
+                <p className={styles.queueStatusClass}> 排隊狀態</p>
+                <p> {queueStatusDisplay} </p>
+                <ul className="queue-user-names">
+                  {queueingUsers.map((user, index) => (
+                    <li key={user.id}>
+                      {index + 1} - {user.name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
 
