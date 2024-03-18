@@ -21,6 +21,7 @@ export default function Home() {
   const { isAuthenticated, currentUser: authUser } = useAuth();
   let currentUser = { id: -1, name: "亞洲賭聖" };
 
+
   if (isAuthenticated) {
     currentUser = authUser;
   }
@@ -33,12 +34,14 @@ export default function Home() {
     isSpinning,
     joinQueue,
     rollDice,
+    isPageLoading
   } = useSocket(currentUser, isAuthenticated);
 
   // 根據 timeDisplay 的值顯示不同的顏色
   const timeClass = useMemo(() => {
     return timeDisplay <= 5 ? styles["time-critical"] : "";
   }, [timeDisplay]);
+
 
   return (
     <>
@@ -49,7 +52,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {/* 加入 正在載入時的 spinner */}
+      {isPageLoading?(<Spinner/>):(
+      
       <div className="container-outside">
+        
         <div className="container home-page-container">
           {/* react 元件，若要接受 style屬性，必須先在 Spinner 定義 property type */}
           {/* <Spinner style={{display:true?1:2}}/> */}
@@ -133,7 +140,9 @@ export default function Home() {
       <button v-if="false" className="roll" @click="endPlay(110)" :disabled="!canRoll">復歸{{ m110 }}</button> */}
           </div>
         </div>
-      </div>
+      </div>)
+
+      }
     </>
   );
 }

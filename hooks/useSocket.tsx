@@ -18,7 +18,7 @@ import Spinner from "@/components/spinner/index";
 
 const useSocket = (currentUser: User, isAuthenticated: boolean) => {
   const [isAbleToRollDice, setIsAbleToRollDice] = useState(true);
-  const [timeDisplay, setTimeDisplay] = useState(10);
+  const [timeDisplay, setTimeDisplay] = useState(0);
   const [queueStatusDisplay, setQueueStatusDisplay] = useState("等待中");
   const [queueingUsers, setQueueingUsers] = useState<User[]>([]);
   const [isQueueing, setIsQueueing] = useState(false);
@@ -30,6 +30,8 @@ const useSocket = (currentUser: User, isAuthenticated: boolean) => {
   // 因為 youtube 直撥延遲有點久，新增個 spinner
   // 合理化等待時間，收到成功骰骰子的訊息後，才會顯示約兩秒
   const [isSpinning, setIsSpinning] = useState(false);
+  // 設定個 isLoading spinner
+  const [isPageLoading,setIsPageLoading]=useState(true)
 
   useEffect(() => {
     // 掛載時設定 socket 事件監聽器
@@ -59,6 +61,10 @@ const useSocket = (currentUser: User, isAuthenticated: boolean) => {
         setQueueStatusDisplay("可加入");
       }
       setQueueingUsers(data.queueIdAndName);
+      // 第一次載入 將 loading 設為 false，表示已經成功載入
+      if (isPageLoading){
+        setIsPageLoading(false)
+      }
     });
 
     // 初始掛載 timer,每秒向伺服器更新剩餘遊玩秒數
@@ -73,6 +79,7 @@ const useSocket = (currentUser: User, isAuthenticated: boolean) => {
       setTimeDisplay(data.countdown);
     });
 
+    
     // 卸載時移除事件監聽器
     return () => {
       if (socketRef.current) {
@@ -95,6 +102,7 @@ const useSocket = (currentUser: User, isAuthenticated: boolean) => {
     }
     // 確認登入 開啟排隊邏輯
     setIsQueueing(true); // 排隊中 ＝ｔｒｕｅ
+    
     const { id, name } = currentUser;
     console.log("id=", id);
     if (socketRef.current) {
@@ -190,6 +198,7 @@ const useSocket = (currentUser: User, isAuthenticated: boolean) => {
     isSpinning,
     joinQueue,
     rollDice,
+    isPageLoading
   };
 };
 
