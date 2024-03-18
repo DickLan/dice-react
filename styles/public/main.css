@@ -16,18 +16,21 @@ body a {
   align-items: center;
   justify-content: center;
 }
+
 .container-outside {
+  /* text-align: center; */
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .container {
   /* background-color: #484242; */
   /* border: 3px solid black; */
   /* text-align: ; */
   margin-top: 2rem;
   width: 100vw;
-  max-width: 660px;
+  max-width: 640px;
 
   height: 100vw;
   display: flex;

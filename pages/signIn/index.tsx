@@ -63,49 +63,51 @@ export default function SingIn() {
 
   return (
     <>
-      <div className="container">
-        <div className="form-page-title">
-          <h1>登入</h1>
-          {/* <h2>isAuthenticated in Signin:{isAuthenticated.toString()}</h2> */}
-        </div>
-        {/*  @submit.prevent.stop="handleSubmit" */}
-        {/* react 可以用 onSubmit來執行函示 或是 action來執行Url */}
-        <form className="form-control" onSubmit={handleSubmit}>
-          <div className="sign-in-info ">
-            <div className="">
-              <label htmlFor="email">信箱</label>
-              <input
-                defaultValue={formData.email}
-                onChange={handleChange}
-                name="email"
-                id="email"
-                type="text"
-                placeholder="請輸入信箱"
-              />
-            </div>
-
-            <div className="">
-              <label htmlFor="password">密碼</label>
-              <input
-                defaultValue={formData.password}
-                onChange={handleChange}
-                name="password"
-                id="password"
-                type="password"
-                placeholder="請輸入密碼"
-              />
-            </div>
+      <div className="container-outside">
+        <div className="container">
+          <div className="form-page-title">
+            <h1>登入</h1>
+            {/* <h2>isAuthenticated in Signin:{isAuthenticated.toString()}</h2> */}
           </div>
-          <button type="submit">登入</button>
-        </form>
+          {/*  @submit.prevent.stop="handleSubmit" */}
+          {/* react 可以用 onSubmit來執行函示 或是 action來執行Url */}
+          <form className="form-control" onSubmit={handleSubmit}>
+            <div className="sign-in-info ">
+              <div className="">
+                <label htmlFor="email">信箱</label>
+                <input
+                  defaultValue={formData.email}
+                  onChange={handleChange}
+                  name="email"
+                  id="email"
+                  type="text"
+                  placeholder="請輸入信箱"
+                />
+              </div>
 
-        <div className={style.redirect}>
-          <Link className={style["redirect-a"]} href="/signUp">
-            新會員註冊
-          </Link>
-          <Link className={style["redirect-a"]} href="/forgetPassword">
-            忘記密碼
-          </Link>
+              <div className="">
+                <label htmlFor="password">密碼</label>
+                <input
+                  defaultValue={formData.password}
+                  onChange={handleChange}
+                  name="password"
+                  id="password"
+                  type="password"
+                  placeholder="請輸入密碼"
+                />
+              </div>
+            </div>
+            <button type="submit">登入</button>
+          </form>
+
+          <div className={style.redirect}>
+            <Link className={style["redirect-a"]} href="/signUp">
+              新會員註冊
+            </Link>
+            <Link className={style["redirect-a"]} href="/forgetPassword">
+              忘記密碼
+            </Link>
+          </div>
         </div>
       </div>
     </>

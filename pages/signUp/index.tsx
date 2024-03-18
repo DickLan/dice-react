@@ -75,29 +75,30 @@ export default function SignUp() {
 
   return (
     <>
-      {/* <SpinnerComponent v-if="isProcessing" /> */}
-      <div className="container">
-        <div className="form-page-title">
-          <h1>註冊</h1>
-        </div>
+      <div className="container-outside">
+        {/* <SpinnerComponent v-if="isProcessing" /> */}
+        <div className="container">
+          <div className="form-page-title">
+            <h1>註冊</h1>
+          </div>
 
-        {/* vue: @submit.stop.prevent="handleSubmit" */}
-        <form className="form-control" onSubmit={handleSubmit}>
-          <div className="sign-up-info ">
-            <div className="">
-              {/* htmlFor 要和 Input Id對應 */}
-              <label htmlFor="name">姓名</label>
-              <input
-                value={formData.name}
-                onChange={handleChange}
-                name="name"
-                id="name"
-                type="text"
-                placeholder="請輸入姓名"
-              />
-            </div>
+          {/* vue: @submit.stop.prevent="handleSubmit" */}
+          <form className="form-control" onSubmit={handleSubmit}>
+            <div className="sign-up-info ">
+              <div className="">
+                {/* htmlFor 要和 Input Id對應 */}
+                <label htmlFor="name">姓名</label>
+                <input
+                  value={formData.name}
+                  onChange={handleChange}
+                  name="name"
+                  id="name"
+                  type="text"
+                  placeholder="請輸入姓名"
+                />
+              </div>
 
-            {/* <div v-if="false" className="">
+              {/* <div v-if="false" className="">
               <label htmlFor="account">帳號</label>
               <input
                 value={formData.account}
@@ -109,61 +110,62 @@ export default function SignUp() {
               />
             </div> */}
 
-            <div className="">
-              <label htmlFor="email">信箱</label>
-              <input
-                value={formData.email}
-                onChange={handleChange}
-                name="email"
-                id="email"
-                type="email"
-                placeholder="請輸入信箱"
-              />
-            </div>
+              <div className="">
+                <label htmlFor="email">信箱</label>
+                <input
+                  value={formData.email}
+                  onChange={handleChange}
+                  name="email"
+                  id="email"
+                  type="email"
+                  placeholder="請輸入信箱"
+                />
+              </div>
 
-            <div className="">
-              <label htmlFor="password">密碼</label>
-              <input
-                value={formData.password}
-                onChange={handleChange}
-                name="password"
-                id="password"
-                type="password"
-                placeholder="請輸入密碼"
-              />
-            </div>
+              <div className="">
+                <label htmlFor="password">密碼</label>
+                <input
+                  value={formData.password}
+                  onChange={handleChange}
+                  name="password"
+                  id="password"
+                  type="password"
+                  placeholder="請輸入密碼"
+                />
+              </div>
 
-            <div className="">
-              <label htmlFor="confirmPassword">確認密碼</label>
-              <input
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                name="confirmPassword"
-                id="confirmPassword"
-                type="password"
-                placeholder="請再次輸入密碼"
-              />
-            </div>
+              <div className="">
+                <label htmlFor="confirmPassword">確認密碼</label>
+                <input
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="請再次輸入密碼"
+                />
+              </div>
 
-            <div className="">
-              <label htmlFor="gender">性別</label>
-              <select
-                value={formData.gender}
-                onChange={handleChange}
-                name="gender"
-                id="gender"
-              >
-                {/* react 推薦使用 value 來控制選中的選項，而非使用 selected, 因此這裡移除 option 預設的 selected */}
-                <option value="" disabled hidden>
-                  請選擇
-                </option>
-                <option value="1">男</option>
-                <option value="2">女</option>
-              </select>
+              <div className="">
+                <label htmlFor="gender">性別</label>
+                <select
+                  value={formData.gender}
+                  onChange={handleChange}
+                  name="gender"
+                  id="gender"
+                >
+                  {/* react 推薦使用 value 來控制選中的選項，而非使用 selected, 因此這裡移除 option 預設的 selected */}
+                  <option value="" disabled hidden>
+                    請選擇
+                  </option>
+                  <option value="1">男</option>
+                  <option value="2">女</option>
+                </select>
+              </div>
             </div>
-          </div>
-          <button type="submit">註冊</button>
-        </form>
+            <button type="submit">註冊</button>
+          </form>
+        </div>
       </div>
     </>
   );
