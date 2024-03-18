@@ -7,6 +7,11 @@
   justify-content: space-between;
   margin-bottom: 20px;
 }
+/* 為主畫面 container 增加一些樣式 方便對齊 */
+.home-page-container {
+  display: flex;
+  background-color: #8d1212;
+}
 
 .video-wrapper {
   /* 調整視頻區域的大小 */

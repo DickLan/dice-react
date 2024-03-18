@@ -3,6 +3,7 @@
   background-color: #3a9927;
   justify-content: space-between;
   align-items: center;
+  width: 100vw;
 }
 
 .nav-left,
