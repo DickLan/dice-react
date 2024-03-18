@@ -36,6 +36,14 @@
   text-align: center;
 }
 
+.queue-button{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: larger;
+  padding: 5px;
+  background-color: #7f1e9c;
+}
+
 /* 動態切換排隊狀態的顏色:至於名稱是否更改為小駝峰，等邏輯移植完畢後再來修改 */
 /* 可遊玩 */
 .queueStatusDisplay-ready {
@@ -59,12 +67,21 @@
   /* width: 40rem; */
 }
 
-.action-buttons-button {
+.action-buttons-button-disabled {
+  opacity: 0.5;
   margin: 0 10px;
   font-size: 1.2rem;
-  background-color: #942e2e;
+  background-color: #663f3f;
   color: aqua;
-  padding: 2px;
+  padding: 5px;
+}
+
+.action-buttons-button-available {
+  margin: 0 10px;
+  font-size: 1.2rem;
+  background-color: #2e8715;
+  color: aqua;
+  padding: 5px;
 }
 
 .outside-link {

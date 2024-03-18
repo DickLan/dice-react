@@ -63,21 +63,43 @@ export default function Home() {
             <div className="intro">
               <h2>哈囉 {currentUser.name}</h2>
               <h3>歡迎來到十八仔</h3>
-
-              {/* 因為是連到外部網站 所以這裡不用 Link, 直接用 <a> */}
-
-              <span>骰一次 10 元，骰到 666 時，可以到 </span>
-              <a
-                className={styles["outside-link"]}
-                href="https://www.littlesheng.com/accounts"
-              >
-                小盛 Pokemon Go
-              </a>
-              <span> 兌換任何一個八千元以下寶可夢帳號</span>
-              <br />
-              {/* <span> 其他三連號可兌換四千元以下寶可夢帳號</span> */}
-
               <h4>{"操作流程：登入 => 排隊 => 骰骰子 (十秒內必須骰出)"}</h4>
+              {/* 因為是連到外部網站 所以這裡不用 Link, 直接用 <a> */}
+              <h5>骰一次 10 元</h5>
+              <>
+                <span>骰出 666 ，可至</span>
+                <a
+                  className={styles["outside-link"]}
+                  href="https://www.littlesheng.com/accounts"
+                >
+                  小盛 Pokemon Go
+                </a>
+                <span> 兌換任何一個八千元以下寶可夢帳號</span>
+              </>
+
+              <br />
+              <>
+                <span>骰出 444 ，可至</span>
+                <a
+                  className={styles["outside-link"]}
+                  href="https://tomb.littlesheng.com"
+                >
+                  雲端祖墳
+                </a>
+                <span>私訊小編為您客制專屬的線上靈骨塔</span>
+              </>
+
+              <br />
+              <>
+                <span>骰出 222 ，可至</span>
+                <a
+                  className={styles["outside-link"]}
+                  href="https://tomb.littlesheng.com"
+                >
+                  模型展示網
+                </a>
+                <span>兌換任一鋼彈模型(尚未實作)</span>
+              </>
             </div>
 
             {/* video + queue status */}
@@ -100,7 +122,9 @@ export default function Home() {
               {/* 排隊佇列顯示 */}
               {/* 先把畫面框架移植完 再來處理有動態變數的部分 圖像辨識骰子紀錄，如果目前做不出來，可以先弄假資料在 db，重點是學習處理動態資料*/}
               <div className={styles["queue-wrapper"]}>
-                <button onClick={joinQueue}>開始排隊</button>
+                <button className={styles["queue-button"]} onClick={joinQueue}>
+                  開始排隊
+                </button>
                 {/* // <!-- 排隊狀態顯示 --> */}
                 <h3 className={styles["play-time-label"]}>可遊玩秒數</h3>
                 <h4 className={`${styles["time-display"]} ${timeClass}`}>
@@ -121,11 +145,16 @@ export default function Home() {
             </div>
 
             {/* <!-- 操作按鈕 --> */}
+            {/* <span>{isAbleToRollDice.toString()}</span> */}
             <div className={styles["action-buttons-area"]}>
               {Array.from({ length: 1 }, (_, i) => (
                 <button
                   onClick={() => rollDice(i)}
-                  className={styles["action-buttons-button"]}
+                  className={
+                    isAbleToRollDice
+                      ? styles["action-buttons-button-available"]
+                      : styles["action-buttons-button-disabled"]
+                  }
                   key={i}
                   disabled={!isAbleToRollDice}
                 >
