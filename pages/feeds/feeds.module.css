@@ -1,0 +1,30 @@
+.feeds-table {
+  width: 100%;
+  border-collapse: collapse;
+  /* color: aqua; */
+}
+
+.feeds-table,
+.feeds-th,
+.feeds-td {
+  border: 1px solid black;
+  padding: 8px;
+  text-align: center;
+}
+
+.feeds-th {
+  background-color: #5c4c4c;
+}
+
+/* tr:nth-child(even) {
+  background-color: #f9f9f9;
+} */
+
+.win {
+  color: rgb(34, 86, 86);
+  background-color: #739f7e;
+}
+
+.lose {
+  background-color: #655152;
+}
