@@ -1,10 +1,10 @@
-import style from "./signUp.module.css";
-import React, { FormEvent, useState } from "react";
-import { useRouter } from "next/router";
-import { apiHelper } from "@/utils/helpers";
-import { Toast } from "@/composables/toast";
+import style from "./signUp.module.css"
+import React, { FormEvent, useState } from "react"
+import { useRouter } from "next/router"
+import { apiHelper } from "@/utils/helpers"
+import { Toast } from "@/composables/toast"
 export default function SignUp() {
-  const router = useRouter();
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: "",
     account: "",
@@ -12,66 +12,66 @@ export default function SignUp() {
     password: "",
     confirmPassword: "",
     gender: "",
-  });
-  const [isProcessing, setIsProcessing] = useState(false);
+  })
+  const [isProcessing, setIsProcessing] = useState(false)
   // signup form submit
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
     // console.log("formData", formData);
     try {
-      setIsProcessing(!isProcessing);
+      setIsProcessing(!isProcessing)
 
       // 兩次密碼比較
       if (formData.password !== formData.confirmPassword) {
         Toast.fire({
           icon: "error",
           title: "兩次密碼輸入不同",
-        });
-        setIsProcessing(!isProcessing);
-        return;
+        })
+        setIsProcessing(!isProcessing)
+        return
       }
 
       // 創建使用者
-      const user = await apiHelper.post("/users", formData);
+      const user = await apiHelper.post("/users", formData)
       // console.log(user)
       // 這裡的錯誤偵測 是針對 apiHelper.post 的結果
       if (!user) {
         Toast.fire({
           icon: "error",
           title: "註冊失敗",
-        });
-        setIsProcessing(!isProcessing);
-        return;
+        })
+        setIsProcessing(!isProcessing)
+        return
       }
 
       Toast.fire({
         icon: "success",
         title: "註冊成功",
-      });
-      router.push("/signIn");
+      })
+      router.push("/signIn")
     } catch (error) {}
-  };
+  }
 
   // 為 event 類型加註 HTMLFormElement，因為有 select 項目
   const handleChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLSelectElement>
+      | React.ChangeEvent<HTMLSelectElement>,
   ) => {
     // console.log('e.target', e.target);
     // console.log('prev formData', formData);
 
-    const { name, value } = e.target;
+    const { name, value } = e.target
     // as HTMLInputElement | HTMLSelectElement;
 
     // 將當前對象的值設定給 formData 中對應的屬性
     // 做個筆記 這裡得到的狀態 仍是 setFormData 之前的狀態
     // 因為 react 狀態更新是異步操作
     // 若要即時更新狀態，要用 useEffect
-    setFormData({ ...formData, [name]: value });
-    console.log("next formData", formData);
-  };
+    setFormData({ ...formData, [name]: value })
+    console.log("next formData", formData)
+  }
 
   return (
     <>
@@ -163,5 +163,5 @@ export default function SignUp() {
         <button type="submit">註冊</button>
       </form>
     </>
-  );
+  )
 }

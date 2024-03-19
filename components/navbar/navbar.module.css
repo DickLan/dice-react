@@ -47,3 +47,24 @@
   cursor: pointer;
   color: rgb(180, 11, 11);
 }
+
+@media (max-width:767px){
+  .wrapper{
+    flex-direction: row;
+    min-height: 100px;
+  }
+  .navbar{
+    flex-wrap: nowrap;
+    max-width: 25px;
+  }
+
+  .nav-mid{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .auth{
+    display: flex;
+    flex-direction: row;
+  }
+}

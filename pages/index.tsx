@@ -1,40 +1,40 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "@/pages/home.module.css";
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import io from "socket.io-client";
-import { apiHelper } from "@/utils/helpers";
-import { Toast } from "@/composables/toast";
-import { useAuth } from "@/context/AuthContext";
+import Head from "next/head"
+import Image from "next/image"
+import styles from "@/pages/home.module.css"
+import React, { useState, useEffect, useRef, useMemo } from "react"
+import io from "socket.io-client"
+import { apiHelper } from "@/utils/helpers"
+import { Toast } from "@/composables/toast"
+import { useAuth } from "@/context/AuthContext"
 // font 字型，暫時先不用
 // import { Inter } from "next/font/google";
 // const inter = Inter({ subsets: ["latin"] });
-import { Socket } from "socket.io-client";
-import Spinner from "@/components/spinner/index";
+import { Socket } from "socket.io-client"
+import Spinner from "@/components/spinner/index"
 // 之後有空要將 socket 移動到自訂 hook
-import useSocket from "@/hooks/useSocket";
+import useSocket from "@/hooks/useSocket"
 
 export default function Home() {
   // 稍後從 context 獲取當前用戶的 ID
   // const currentUser = { id: "當前用戶 ID", name: "dummy" };
   // 從 useAuth 提取當前使用者，並命名成 authUser，避免衝突
-  const { isAuthenticated, currentUser: authUser } = useAuth();
-  let currentUser = { id: -1, name: "亞洲賭聖" };
+  const { isAuthenticated, currentUser: authUser } = useAuth()
+  let currentUser = { id: -1, name: "亞洲賭聖" }
 
   // 定義狀態來儲存是否為移動裝置
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkIsMobile(); // 初始檢查
-    window.addEventListener("resize", checkIsMobile); // 視窗大小改變時，也做檢查
-    return () => window.removeEventListener("resize", checkIsMobile); // 元件解除安裝時，移除監聽避免佔用資源
-  }, []);
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkIsMobile() // 初始檢查
+    window.addEventListener("resize", checkIsMobile) // 視窗大小改變時，也做檢查
+    return () => window.removeEventListener("resize", checkIsMobile) // 元件解除安裝時，移除監聽避免佔用資源
+  }, [])
 
   if (isAuthenticated) {
-    currentUser = authUser;
+    currentUser = authUser
   }
   const {
     isAbleToRollDice,
@@ -46,12 +46,12 @@ export default function Home() {
     joinQueue,
     rollDice,
     isPageLoading,
-  } = useSocket(currentUser, isAuthenticated);
+  } = useSocket(currentUser, isAuthenticated)
 
   // 根據 timeDisplay 的值顯示不同的顏色
   const timeClass = useMemo(() => {
-    return timeDisplay <= 5 ? styles["time-critical"] : "";
-  }, [timeDisplay]);
+    return timeDisplay <= 5 ? styles["time-critical"] : ""
+  }, [timeDisplay])
 
   return (
     <>
@@ -71,46 +71,50 @@ export default function Home() {
           {/* <Spinner style={{display:true?1:2}}/> */}
           <Spinner style={{ display: isSpinning ? "flex" : "none" }} />
 
-          <div className="intro">
-            <h2>哈囉 {currentUser.name}</h2>
-            <h3>歡迎來到十八仔</h3>
-            <h4>{"操作流程：登入 => 排隊 => 骰骰子 (十秒內必須骰出)"}</h4>
+          <div className={styles.intro}>
+            <h2 className={styles.greet}>哈囉 {currentUser.name}</h2>
+            <h3 className={styles.welcome}>歡迎來到十八仔</h3>
+            <h4 className={styles.steps}>
+              {"操作流程：登入 => 排隊 => 骰骰子 (十秒內必須骰出)"}
+            </h4>
             {/* 因為是連到外部網站 所以這裡不用 Link, 直接用 <a> */}
-            <h5>骰一次 10 元</h5>
-            <>
-              <span>骰出 666 ，可至</span>
-              <a
-                className={styles["outside-link"]}
-                href="https://www.littlesheng.com/accounts"
-              >
-                小盛 Pokemon Go
-              </a>
-              <span> 兌換任何一個八千元以下寶可夢帳號</span>
-            </>
+            <div className={styles["award-info"]}>
+              <h5>骰一次 10 元</h5>
+              <>
+                <span>骰出 666 ，可至</span>
+                <a
+                  className={styles["outside-link"]}
+                  href="https://www.littlesheng.com/accounts"
+                >
+                  小盛 Pokemon Go
+                </a>
+                <span> 兌換任何一個八千元以下寶可夢帳號</span>
+              </>
 
-            <br />
-            <>
-              <span>骰出 444 ，可至</span>
-              <a
-                className={styles["outside-link"]}
-                href="https://tomb.littlesheng.com"
-              >
-                雲端祖墳
-              </a>
-              <span>私訊小編為您客制專屬的線上靈骨塔</span>
-            </>
+              <br />
+              <>
+                <span>骰出 444 ，可至</span>
+                <a
+                  className={styles["outside-link"]}
+                  href="https://tomb.littlesheng.com"
+                >
+                  雲端祖墳
+                </a>
+                <span>私訊小編為您客制專屬的線上靈骨塔</span>
+              </>
 
-            <br />
-            <>
-              <span>骰出 222 ，可至</span>
-              <a
-                className={styles["outside-link"]}
-                href="https://tomb.littlesheng.com"
-              >
-                模型展示網
-              </a>
-              <span>兌換任一鋼彈模型(尚未實作)</span>
-            </>
+              <br />
+              <>
+                <span>骰出 222 ，可至</span>
+                <a
+                  className={styles["outside-link"]}
+                  href="https://tomb.littlesheng.com"
+                >
+                  模型展示網
+                </a>
+                <span>兌換任一鋼彈模型(尚未實作)</span>
+              </>
+            </div>
           </div>
 
           {/* video + queue status */}
@@ -127,7 +131,7 @@ export default function Home() {
                     ? { width: "100%", height: "100%", minWidth: "300px" }
                     : { width: 500, height: 300 }
                 }
-                src="https://www.youtube-nocookie.com/embed/8TN65tzvhbA?si=zfskt-vJi4OFDHHD&autoplay=1&mute=1"
+                src="https://www.youtube.com/embed/isb2ifnhzSo?si=zfskt-vJi4OFDHHD&autoplay=1&mute=1"
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share "
@@ -192,5 +196,5 @@ export default function Home() {
         </>
       )}
     </>
-  );
+  )
 }

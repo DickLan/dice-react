@@ -1,10 +1,10 @@
-import style from "@/components/navbar/navbar.module.css";
-import Link from "next/link";
-import Image from "next/image";
+import style from "@/components/navbar/navbar.module.css"
+import Link from "next/link"
+import Image from "next/image"
 // 加入自訂 hook - useAuth 方便全局狀態管理與應用
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/context/AuthContext"
 export default function Navbar() {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth()
   // 為了 JSX 版面整潔，將 auth 條件渲染提取到變數中
   const authLink = isAuthenticated ? (
     <button className={style["auth-logout"]} onClick={logout}>
@@ -14,16 +14,16 @@ export default function Navbar() {
     <Link className={style["auth-a"]} href="/signIn">
       登入
     </Link>
-  );
+  )
 
-  let currentUserInLS;
-  let currentUserId;
+  let currentUserInLS
+  let currentUserId
   if (isAuthenticated) {
-    currentUserInLS = localStorage.getItem("currentUser");
+    currentUserInLS = localStorage.getItem("currentUser")
     if (currentUserInLS) {
       // console.log("currentUserInLS", currentUserInLS);
-      console.log("JSON.parse(currentUserInLS)", JSON.parse(currentUserInLS));
-      currentUserId = JSON.parse(currentUserInLS).id;
+      console.log("JSON.parse(currentUserInLS)", JSON.parse(currentUserInLS))
+      currentUserId = JSON.parse(currentUserInLS).id
     }
   }
 
@@ -45,7 +45,7 @@ export default function Navbar() {
           {/* <h2>isAuthenticated in Navbar:{isAuthenticated.toString()}</h2> */}
         </div>
 
-        <div className="nav-mid">
+        <div className={style["nav-mid"]}>
           {/* <Link className={style["nav-mid-link"]} href="/about">
             關於我們
           </Link> */}
@@ -63,7 +63,7 @@ export default function Navbar() {
 
         {/* 如果包含特殊字符 例如`-`  要用[]來訪問 */}
         <div className={style["nav-right"]}>
-          <nav className="auth">
+          <nav className={style.auth}>
             {/* 使用 css module 或　react 時，不能直接使用複合選擇器 例如 .auth a
             這是無法使用的 
             有兩種方式可以處理:
@@ -79,5 +79,5 @@ export default function Navbar() {
         </div>
       </div>
     </>
-  );
+  )
 }

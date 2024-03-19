@@ -1,17 +1,17 @@
 // 先用假資料 設計版面
 // 後續能夠圖像辨識骰子點數時，再來建 db 相關流程
-import styles from "@/pages/feeds/feeds.module.css";
+import styles from "@/pages/feeds/feeds.module.css"
 
 type Feed = {
-  userId: number;
-  userName: string;
-  point1: number;
-  point2: number;
-  point3: number;
-  isWin: boolean;
-  reward: string;
-  date: string;
-};
+  userId: number
+  userName: string
+  point1: number
+  point2: number
+  point3: number
+  isWin: boolean
+  reward: string
+  date: string
+}
 
 const feeds: Feed[] = [
   {
@@ -64,7 +64,7 @@ const feeds: Feed[] = [
     date: "2022-10-05 16:00:00",
     reward: "None",
   },
-];
+]
 
 export default function Feeds() {
   return (
@@ -100,9 +100,9 @@ export default function Feeds() {
                 <td className={styles["feeds-td"]}>{feed.date}</td>
               </tr>
             </>
-          );
+          )
         })}
       </table>
     </>
-  );
+  )
 }
