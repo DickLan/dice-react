@@ -130,6 +130,8 @@
     /* background-color: #fff; */
     display: flex;
     flex-direction: column;
+    width: 100%;
+    height: 100vh;
   }
 
   .intro {
@@ -161,6 +163,10 @@
   }
 
   .video-wrapper iframe {
+    /* width: 100% important;
+    height: 100% important; */
+    object-fit: fill;
+    /* height: 800px; */
     /* width: 100% important;
     height: 100% important;
     

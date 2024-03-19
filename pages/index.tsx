@@ -128,7 +128,7 @@ export default function Home() {
                 // height="315"
                 style={
                   isMobile
-                    ? { width: "100%", height: "100%", minWidth: "300px" }
+                    ? { width: "100%", height: "100%", minWidth: "100%rem" }
                     : { width: 500, height: 300 }
                 }
                 src="https://www.youtube-nocookie.com/embed/isb2ifnhzSo?si=zfskt-vJi4OFDHHD&autoplay=1&mute=1"
