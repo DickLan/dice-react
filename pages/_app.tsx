@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
       {/* 要用 AuthProvider 包起來，才能在內部訪問到 AuthContext 提供的狀態與方法 */}
       <AuthProvider>
         <Layout>
-          <Component {...pageProps} />;
+          <Component {...pageProps} />
         </Layout>
       </AuthProvider>
     </>
