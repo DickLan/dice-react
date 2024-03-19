@@ -16,7 +16,16 @@ type User = {
 };
 import Spinner from "@/components/spinner/index";
 
-const useSocket = (currentUser: User, isAuthenticated: boolean) => {
+let currentUser3 = { id: -2, name: "socket賭聖" };
+
+if (typeof window !== 'undefined' ) {
+  const storageInLS = localStorage.getItem('currentUser');
+  if (storageInLS) {
+    currentUser3 = JSON.parse(storageInLS);
+  }
+}
+
+const useSocket = (currentUser= currentUser3, isAuthenticated: boolean) => {
   const [isAbleToRollDice, setIsAbleToRollDice] = useState(false);
   const [timeDisplay, setTimeDisplay] = useState(0);
   const [queueStatusDisplay, setQueueStatusDisplay] = useState("等待中");
@@ -37,7 +46,7 @@ const useSocket = (currentUser: User, isAuthenticated: boolean) => {
     // 掛載時設定 socket 事件監聽器
 
     const token = localStorage.getItem("token");
-    console.log("socketURL", socketURL);
+    // console.log("socketURL", socketURL);
     socketRef.current = io(`${socketURL}`, {
       path: "/api/socket.io",
       auth: {
@@ -45,6 +54,7 @@ const useSocket = (currentUser: User, isAuthenticated: boolean) => {
       },
     });
     socketRef.current.on("queueStatusUpdateFromServer", (data) => {
+      console.log("queueStatusUpdateFromServer currentUser", currentUser);
       if (
         data.queueIdAndName.length > 0 &&
         data.queueId &&
@@ -90,12 +100,11 @@ const useSocket = (currentUser: User, isAuthenticated: boolean) => {
         socketRef.current.off("queueStatusUpdateFromServer");
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); 
+  }, [currentUser]); 
 
   // 排隊方法
   function joinQueue() {
-    console.log("socketURL=", socketURL);
+    // console.log("socketURL=", socketURL);
     // 啟動排隊邏輯
     // 登入後才能排隊
     if (!isAuthenticated) {
@@ -122,7 +131,7 @@ const useSocket = (currentUser: User, isAuthenticated: boolean) => {
       const waitForResponse = new Promise<any>((resolve, reject) => {
         if (socketRef.current) {
           socketRef.current.once("beforeUserRollDiceQueueCheck", (data) => {
-            console.log("data", data);
+            // console.log("data", data);
             resolve(data); // 使用服務器的響應解決 Promise
           });
 
