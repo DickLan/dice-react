@@ -21,6 +21,18 @@ export default function Home() {
   const { isAuthenticated, currentUser: authUser } = useAuth();
   let currentUser = { id: -1, name: "亞洲賭聖" };
 
+  // 定義狀態來儲存是否為移動裝置
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkIsMobile(); // 初始檢查
+    window.addEventListener("resize", checkIsMobile); // 視窗大小改變時，也做檢查
+    return () => window.removeEventListener("resize", checkIsMobile); // 元件解除安裝時，移除監聽避免佔用資源
+  }, []);
+
   if (isAuthenticated) {
     currentUser = authUser;
   }
@@ -108,11 +120,16 @@ export default function Home() {
               {/* <!-- YouTube嵌入iframe --> */}
               {/* 在 React 和 TypeScript 中使用 <iframe> 時，你需要遵循 JSX 和 TypeScript 的規範來指定屬性名=> 小駝峰命名  */}
               <iframe
-                width="500"
-                height="315"
+                // width=100%
+                // height="315"
+                style={
+                  isMobile
+                    ? { width: "100%", height: "100%", minWidth: "300px" }
+                    : { width: 500, height: 300 }
+                }
                 src="https://www.youtube-nocookie.com/embed/8TN65tzvhbA?si=zfskt-vJi4OFDHHD&autoplay=1&mute=1"
                 title="YouTube video player"
-                frameborder="0"
+                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share "
                 allowFullScreen
               ></iframe>
