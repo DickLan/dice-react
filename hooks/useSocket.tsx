@@ -17,7 +17,7 @@ type User = {
 import Spinner from "@/components/spinner/index";
 
 const useSocket = (currentUser: User, isAuthenticated: boolean) => {
-  const [isAbleToRollDice, setIsAbleToRollDice] = useState(true);
+  const [isAbleToRollDice, setIsAbleToRollDice] = useState(false);
   const [timeDisplay, setTimeDisplay] = useState(0);
   const [queueStatusDisplay, setQueueStatusDisplay] = useState("等待中");
   const [queueingUsers, setQueueingUsers] = useState<User[]>([]);
@@ -53,6 +53,9 @@ const useSocket = (currentUser: User, isAuthenticated: boolean) => {
         const displayStatus =
           data.queueIdAndName[0].id === currentUser.id ? "輪到你辣" : "等待中";
         setQueueStatusDisplay(displayStatus);
+        if (displayStatus==="輪到你辣"){
+        setIsAbleToRollDice(true)
+      }
         setIsAbleToRollDice(data.queueIdAndName[0].id === currentUser.id);
       } else {
         setIsAbleToRollDice(false);
@@ -61,13 +64,14 @@ const useSocket = (currentUser: User, isAuthenticated: boolean) => {
         setQueueStatusDisplay("可加入");
       }
       setQueueingUsers(data.queueIdAndName);
+      
 
     });
 
     // 初始掛載 timer,每秒向伺服器更新剩餘遊玩秒數
     const interval = setInterval(() => {
       if (socketRef.current) {
-        console.log("requestCountdown emitted");
+        // console.log("requestCountdown emitted");
         socketRef.current.emit("requestCountdown");
       }
     }, 1000);

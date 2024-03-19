@@ -131,7 +131,7 @@ export default function Home() {
                     ? { width: "100%", height: "100%", minWidth: "300px" }
                     : { width: 500, height: 300 }
                 }
-                src="https://www.youtube.com/embed/isb2ifnhzSo?si=zfskt-vJi4OFDHHD&autoplay=1&mute=1"
+                src="https://www.youtube-nocookie.com/embed/isb2ifnhzSo?si=zfskt-vJi4OFDHHD&autoplay=1&mute=1"
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share "
