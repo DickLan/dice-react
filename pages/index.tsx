@@ -26,7 +26,7 @@ export default function Home() {
 
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768)
+      setIsMobile(window.innerWidth <= 767)
     }
     checkIsMobile() // 初始檢查
     window.addEventListener("resize", checkIsMobile) // 視窗大小改變時，也做檢查

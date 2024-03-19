@@ -48,22 +48,23 @@
   color: rgb(180, 11, 11);
 }
 
-@media (max-width:767px){
-  .wrapper{
+@media (max-width:767px) {
+  .wrapper {
     flex-direction: row;
     min-height: 100px;
   }
-  .navbar{
+
+  .navbar {
     flex-wrap: nowrap;
     max-width: 25px;
   }
 
-  .nav-mid{
+  .nav-mid {
     display: flex;
     flex-direction: row;
   }
 
-  .auth{
+  .auth {
     display: flex;
     flex-direction: row;
   }

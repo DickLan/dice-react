@@ -16,7 +16,7 @@
 
 .greet,
 .welcome,
-.steps{
+.steps {
   margin-bottom: 0.5rem;
 }
 
@@ -44,7 +44,7 @@
   text-align: center;
 }
 
-.queue-button{
+.queue-button {
   margin-top: 1rem;
   margin-bottom: 1rem;
   font-size: larger;
@@ -124,7 +124,7 @@
   color: #24a76c;
 }
 
-@media (max-width:767px){
+@media (max-width:767px) {
   .content {
     /* grid-template-columns: 1fr; */
     /* background-color: #fff; */
@@ -136,7 +136,7 @@
     margin: 0 0.5rem;
   }
 
-  .queue-wrapper{
+  .queue-wrapper {
     order: 1;
     margin: 0 2px;
     display: flex;
@@ -145,21 +145,22 @@
 
   .mobile-queue-1,
   .mobile-queue-2,
-  .mobile-queue-3{
+  .mobile-queue-3 {
     margin: 0 2px;
     margin-top: 5px;
   }
-  .mobile-queue-1{
-    order:3
+
+  .mobile-queue-1 {
+    order: 3
   }
 
-  .video-wrapper{
+  .video-wrapper {
     align-items: center;
     order: 2;
     margin: 0 2px;
   }
 
-  .video-wrapper  iframe{
+  .video-wrapper iframe {
     /* width: 100% important;
     height: 100% important;
     
@@ -170,5 +171,5 @@
     /* max-width: 100%;
     max-height: 100%; */
   }
-  
+
 }
