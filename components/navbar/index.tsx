@@ -2,7 +2,7 @@ import style from "@/components/navbar/navbar.module.css"
 import Link from "next/link"
 import Image from "next/image"
 // 加入自訂 hook - useAuth 方便全局狀態管理與應用
-import { useAuth } from "@/context/AuthContext"
+import { useAuth } from "@/components/auth/useAuth"
 export default function Navbar() {
   const { isAuthenticated, logout } = useAuth()
   // 為了 JSX 版面整潔，將 auth 條件渲染提取到變數中

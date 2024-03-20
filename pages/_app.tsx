@@ -6,7 +6,7 @@ import "@/styles/public/formStyle.css" // 引入 form 表單共用樣式
 
 import type { AppProps } from "next/app"
 import Layout from "@/components/layout"
-import { AuthProvider } from "@/context/AuthContext"
+import { AuthProvider } from "@/components/auth/useAuth"
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>

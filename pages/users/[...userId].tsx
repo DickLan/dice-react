@@ -1,6 +1,6 @@
 // 為了測試動態路由而開的畫面
 import { useRouter } from "next/router"
-import { useAuth } from "@/context/AuthContext"
+import { useAuth } from "@/components/auth/useAuth"
 export default function UserPage() {
   const router = useRouter()
   const { isAuthenticated, logout } = useAuth()

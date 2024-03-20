@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef, useMemo } from "react"
 import io from "socket.io-client"
 import { apiHelper } from "@/utils/helpers"
 import { Toast } from "@/composables/toast"
-import { useAuth } from "@/context/AuthContext"
+import { useAuth } from "@/components/auth/useAuth"
 // font 字型，暫時先不用
 // import { Inter } from "next/font/google";
 // const inter = Inter({ subsets: ["latin"] });

@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import { apiHelper } from "@/utils/helpers"
 import { Toast } from "@/composables/toast"
 import Link from "next/link"
-import { useAuth } from "@/context/AuthContext"
+import { useAuth } from "@/components/auth/useAuth"
 export default function SingIn() {
   const { isAuthenticated, login } = useAuth()
   const router = useRouter()
